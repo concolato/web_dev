@@ -1,0 +1,245 @@
+svg {
+  font: 10px sans-serif;
+}
+#dashboardA div {
+  font: 11px sans-serif;
+  margin: 1px;
+}
+  .chart{
+    top:-20px;
+  }
+  .chart rect {
+    fill: #99CCFF;
+  }
+  .chart text {
+    fill: white;
+    font: 10px sans-serif;
+    text-anchor: middle;
+  }
+ .chart{
+    clear: both;
+    overflow: hidden;
+  }
+    #barchartPopup, #forceClusterPopup{
+      background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+      border-radius: 5px;
+      box-shadow: 0 0 15px;
+
+      width:185px;
+      position: absolute;
+      font-size: 10pt;
+      color:#555;
+      z-index: 99999;
+    }
+    #bar:hover{
+      fill:#DADADA;
+      cursor: pointer;
+    }
+    #bar {
+      fill-opacity: .9;
+    }
+.ethnicSwitch{
+  height: 50px;
+  top:-390px !important;
+}
+.jobCenterSwitch{
+  height: 60px;
+  top:-105px !important;
+}
+.ethnicSwitch, .jobCenterSwitch{
+  width:130px; 
+  overflow: hidden;
+  font-size: 14px;
+  float:right;
+  left:165px;
+  cursor: auto;
+  position: relative;
+
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  font: 14px/16px Arial,Helvetica,sans-serif;
+  padding: 6px 8px;
+  color: #3d3d3d;
+  clear:both;
+}
+#ethnicButtons, .jobCenterButtons{
+  min-height: 100px;
+  clear:both;
+}
+#treemap{
+  margin: auto 0px;
+}
+/*
+.dashtitle{
+  width:130px;
+  background: white !important;
+  color:#3d3d3d !important;
+  float:right;
+  left: 170px;
+  position: relative;
+  top: -65px;
+  clear: both;
+}
+*/
+#treeMapControls{
+  width: 140px;
+  height: 17pt;
+  color: #3D3D3D;
+  font-size: 13px !important;
+}
+#treemapPopup{
+  width: auto; /*205px;*/
+  max-width: 250px;
+  min-width: 205px;
+  background: #fff;
+  z-index: 999;
+  position: absolute;;
+}
+
+.info, .dashtitle, .info2, #treeMapControls, #treemapPopup{
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  margin:5px 5px 10px 10px !important;
+}
+.info h4, .info2 h4 {
+  margin: 0 0 5px;
+  color: #777;
+}
+.legend{
+  float:right;
+  left:170px;
+  width:130px;
+  position: relative;
+  z-index: 999;
+  top: -75px;
+  line-height: 16px !important;
+}
+.legend, .legend2 {
+    line-height: 14.5px;
+    color: #555;
+    font-size: .90em;
+}
+.legend i, .legend2 i {
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+#MapFullClick{
+	color:#0066FF;
+	font-size: .81em;
+	cursor: pointer;
+	float: left;
+	width:100px;
+	position: absolute;
+	top: 10px;
+	margin-left: 190px;
+}
+#MapClick{
+	z-index: 2000;
+	width:50px;
+	float: left;
+	background: #CCC;
+	cursor: pointer;
+}
+
+#mapdiv{
+  height: 560px; width:1200px; margin:0 auto 20px; overflow:hidden;clear: both;
+}
+#dashboardA{
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0px auto;
+  position: relative;
+  width: 1200px;
+  /*background-color:#B7D2D2;*/
+  color:#fff;
+}
+.leaflet-top.leaflet-left{
+  top:105px;
+}
+.treemapNodeHighlight{
+  background: #000 !important;
+  opacity: 1.0 !important;
+  border: solid 1px #000 !important;
+}
+.node {
+  border: solid 1px white;
+  font: 13px helvetica;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+form {
+  position: absolute;
+  left: 5px;
+  top: 3px;
+}
+
+#dashboardB {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  width: 985px;
+  /*background:#DADADA;*/
+  color:#ccc;
+  clear:both;
+}
+
+button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.title{
+    color:#555555;
+    width:180pt; float:right; padding:5px; margin:5px 10px 5px 5px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size:11px;
+}
+.controls{
+    color:#555555;
+    width:100pt; height: 15px; float:left; 
+    padding:5px; margin:5px 0px 0px 10px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size:11px;
+}
+.actionButtons{
+  float: right;
+  padding:3px;
+  margin: 0px 0px 0px 7px;
+}
+#sort{
+  width: 150px;
+  margin-right: 5px;
+}
+#reset{
+  width: 30px;
+}
+#sort, #reset{      
+  float:left;
+  cursor: pointer;
+  padding: 4px;
+  color:#3d3d3d;
+
+  background-color:#ccc;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+#sort:hover, #reset:hover{background-color:#3d3d3d; color:#ccc;}

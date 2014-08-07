@@ -1,0 +1,130 @@
+<html>
+<title>Visulaization Interactive Map</title>
+<head>
+	<link rel="stylesheet" href="css/leaflet.css" /> 
+	<link rel="stylesheet" href="css/main.css" /> 
+  <link rel="stylesheet" href="css/jquery-ui.css" />
+  <link rel="stylesheet" href="css/leaflet-search.css" />
+	<style type="text/css">
+		/* Test New CSS */
+    #dashboardSwitch{
+      width:150px;
+      float: left;
+      clear:both;
+      position: relative;
+      top: -500px;
+      left: 10px;
+    }
+    .dashBoardButton{
+      float: left;
+      width: 120px;
+    }
+    #dashboardB{
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      margin: 0px auto;
+      position: relative;
+      width: 1200px;
+    }
+    .node:hover{
+      stroke: #000;
+    }
+    .ui-dialog{
+      z-index: 9999;
+      top:215px !important;
+    }
+    .ui-button{
+      margin-top: 1px !important;
+    }
+    /* End Test */
+    
+    @-moz-document url-prefix() {
+      .ethnicSwitch{
+        height: 13%;
+        overflow: hidden;
+        top: -445px !important;
+      }
+      .jobCenterSwitch{
+        height: 85px;
+        top:-105px !important;
+      }
+    }
+	</style>
+  <!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+  <!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+  <!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+  <!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+</head>
+<body style="background:#3d3d3d;">	
+ <div id="dashboardB">
+    <div class="actionButtons">
+      <div id="sort">Sort By Job Centers</div>
+      <div id="reset">A-Z</div>
+    </div>
+
+    <div class="chart"></div>
+  </div>
+	<div id="mapdiv"></div>
+
+	<div id="dashboardA">
+    <div class="legendDiv"></div>
+
+    <div class="ethnicSwitch leaflet-control">
+      <form id="ethnicButtons">
+        <label><input type="radio" id="ethnic" name="ethnic" value="both" checked> Both</label><br />     
+        <label><input type="radio" id="ethnic" name="ethnic" value="asian" > Asian</label><br />
+        <label><input type="radio" id="ethnic" name="ethnic" value="hawaiian"> Pacific Islander</label>
+      </form>
+    </div>
+
+    <div class="jobCenterSwitch leaflet-control">
+      <form id="jobCenterButtons"> 
+        <label><input type="radio" id="jobC" name="jobC" value="jobcount" >
+          DOL-Sponsored Offices View</label><br />
+        <label><input type="radio" id="jobC" name="jobC" value="populationcount">
+          Population View</label>
+      </form>
+    </div>  
+	</div>
+
+  <div id="barchartPopup"></div>
+
+  <div id="forceClusterPopup"></div>
+
+  <div id="treemapPopup"></div> 
+  
+  <script type="text/javascript" src="js/d3.v3.js" charset="utf-8"></script>
+  <script src="js/jquery-2.0.3.min.js"></script> 
+  <script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+  <script src="js/leaflet.js"></script> 
+  <script src="js/leaflet-search.js"></script>
+  <script src="js/leaflet.markercluster-src.js"></script>
+  <script src="js/leafletMap.js"></script>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $('#treemapPopup').hide();
+        $('#barchartPopup').hide();
+        $('#forceClusterPopup').hide(); //This gets hidden with the leafletMap.js class
+
+        $("#dashboardA").mouseout(function() {
+            $('#treemapPopup').hide();         
+        });
+        $(".chart").mouseout(function() {
+            $('#barchartPopup').hide();         
+        });
+      });
+
+    (function ($) {
+        "use strict";
+        // Detecting IE
+        var oldIE;
+        if ($('html').is('.ie6, .ie7, .ie8, .ie9')) {
+            oldIE = true;
+        }
+        if (oldIE) {
+            alert("This App does not work well in earlier versions of Internet Explorer (IE). Please IE 10 or greater, thank you.")
+        } 
+    }(jQuery));
+  </script>
+</body>
+</html>
