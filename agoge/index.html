@@ -1,0 +1,110 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Graphics Data Visualization Prototype</title>
+    
+    <link rel="stylesheet" href="css/jqueryui.css">
+    <link type="text/css" rel="stylesheet" href="css/main.css"/>  
+    <style>
+    #defs{
+      height: 0px;
+    }
+    </style> 
+</head>
+<body>
+<div id="body-container"> 
+<h2>Welcome To Agoge: An Informational Visualization Prototype</h2>   
+    <div id="textsizer">                
+        <div class="outside-container">        
+           <div id="globe_wrapper">
+               <div class="legend" id="clLegend"> 
+                  <h4>Working Children Age: 5&ndash;14 (%)</h4>
+                  <div class="legendKeyWrapper">
+                  </div>
+               </div>
+               <svg id="legendDefs" height="0" width="0">
+                 <defs>
+                     <linearGradient id="gradCL" x1="0%" y1="0%" x2="100%" y2="0%">
+                         <stop offset="0%" style="stop-color:#fca6a1;stop-opacity:1" /><!--#FFCDCD-->
+                         <stop offset="100%" style="stop-color:#5A0903;stop-opacity:1" /><!--#CF0000 #c2362e-->
+                     </linearGradient>                     
+                 </defs>
+               </svg>
+
+               <div id="globePopup"></div>
+               <!--<div id="globe_box"> -->     
+               <div id="globe">
+                 <svg id="defs">
+                     <defs>
+                         <linearGradient id="gradBlue" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <!-- orig. color #005C99 -->
+                             <stop offset="0%" style="stop-color:#111111;stop-opacity:1" />
+                          <!-- orig. color #0099FF -->
+                             <stop offset="100%" style="stop-color:#444444;stop-opacity:1" />
+                         </linearGradient>
+                         <filter id="glow">
+                             <feColorMatrix type="matrix"
+                             values=
+                             "0 0 0 0 0
+                             0 0 0 0.9 0
+                             0 0 0 0.9 0
+                             0 0 0 1 0"/>
+                             <feGaussianBlur stdDeviation="5.5" result="coloredBlur"/>
+                             <feMerge>
+                             <feMergeNode in="coloredBlur"/>
+                             <feMergeNode in="SourceGraphic"/>
+                             </feMerge>
+                         </filter>
+                     </defs>
+                 </svg>
+               </div>                   
+               <!--</div> -->
+
+               <div id="NextTreeMap">
+                   <div id="statTitle1"></div>
+                   <div id="treemapTitle"><h3>Global Products: 2009&mdash;2012 </h3></div>
+                   <div id="treemapReset">Reset</div>                   
+                   <div id="helpButton">Sources</div>
+                   <div class="helpBox">
+                        <p>This data is coming from:<br />
+                            <ul>
+                                <li><a href="http://www.childinfo.org/labour_countrydata.php" target="new">UNICEF</a></li>
+                                <li><a href="http://data.worldbank.org/news/world-development-indicators-2012-now-available" target="new">The World Bank</a></li>
+                                <li><a href="http://www.dol.gov/ilab/programs/ocft/" target="new">U.S. Department of Labor</a></li>
+                            </ul>
+                        </p>
+                   </div>
+                   
+                   <div id="treemap"></div>
+                   <div id="TMLegendPopUp"></div>
+                   <div id="TMLegend">
+                        <h4>Secotors</h4>
+                   </div>
+                   
+                   <div id="treemapPopup"></div>
+                   <div class="downloadTM">
+                      <!-- Can be added later to lead to a zip file -->
+                      <a href="js/data/data.zip" target="_blank">Download Data &#8595;</a>
+                   </div>
+               </div>              
+           </div> 
+        </div>
+    </div>
+  </div>
+</div> 
+</body>
+</html>
+
+<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script> 
+<script type="text/javascript" src="js/d3.v3.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        main();
+    });
+</script>
+<script type="text/javascript" src="js/d3.geo.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/childLabourWidget.js"></script> 
