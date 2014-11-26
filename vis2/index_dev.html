@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<title>OASP Interactive Map</title>
+<head>
+	<link rel="stylesheet" href="blackBox/css/leaflet.css" /> 
+	<link rel="stylesheet" href="blackBox/css/main.css" /> 
+   <!--<link rel="stylesheet" href="blackBox/css/jquery-ui.css" /> -->
+	<style type="text/css">
+		/* Test New CSS */
+
+    /* End Test */
+    @-moz-document url-prefix() {
+      .ethnicSwitch{
+        height: 12%;
+        overflow: hidden;
+        top: -445px !important;
+      }
+      .jobCenterSwitch{
+        height: 33px;
+        top:-443px !important;
+      }
+      #barchartPopup{
+        height: 13%;
+      }
+      .ethnicSwitch{
+        height: 80px;
+      }
+      #mapdiv{
+        
+      }
+      .legendDiv{
+        float: left;
+        margin-top: 570px;
+        position: relative;
+        z-index: 999;
+      }
+      #navWrapper{
+        width: 325px;
+        float:right;
+        position: relative;
+        margin: 150px 5px;
+        z-index:999;
+      }
+
+      #mapdiv{
+        height: 820px;
+      }
+    }
+	</style>
+  <!--[if IE]> 
+    <style type="text/css"> 
+      #jobCenterButtons{ top: 55px; }
+      .ethnicSwitch { height: 70px;}
+
+      #mapdiv{
+        height: 820px;
+      }
+    </style>
+  <![endif]-->
+
+  <!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+  <!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+  <!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+  <!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+</head>
+<body style="background:#ccc;">	
+<div id="mainWrapper">
+  <div id="mapdiv">
+    <div id="navWrapper">
+
+      <div id="NavDisplayControle">Hide/Show</div>
+      <div id="mapControls"> 
+        <form id="ethnicButtons">
+          <ul class="menu1">     
+            <li><h3 id="Both" class="navButtons"><label for="both"><input type="radio" id="both" name="ethnic" value="both" checked>All</label></h3> 
+              <ul id="Bothmenu2" class="navSub">
+                <li><label for="both_male"><input type="radio" id="both_male" name="ethnic" value="both_male" >Male</label></li>
+                <li><label for="both_female"><input type="radio" id="both_female" name="ethnic" value="both_female" >Female</label></li> 
+
+                <li><label for="both_age_18_24"><input type="radio" id="both_age_18_24" name="ethnic" value="both_age_18_24" >Ages 18-24</label> </li>
+                <li><label for="both_age_25_54"><input type="radio" id="both_age_25_54" name="ethnic" value="both_age_25_54" >Ages 25-54</label> </li>
+                <li><label for="both_age_55_over"><input type="radio" id="both_age_55_over" name="ethnic" value="both_age_55_over" >Ages 55 and Over</label></li>
+
+                <li><label for="both_edu_less_than_high"><input type="radio" id="both_edu_less_than_high" name="ethnic" value="both_edu_less_than_high" >Less than High School Diploma</label> </li>
+                <li><label for="both_edu_high_ged"><input type="radio" id="both_edu_high_ged" name="ethnic" value="both_edu_high_ged" >High School Graduate or GED</label> </li>
+                <li><label for="both_edu_some_college"><input type="radio" id="both_edu_some_college" name="ethnic" value="both_edu_some_college" >Some College or Associate's Degree</label></li>
+                <li><label for="both_edu_college_higher"><input type="radio" id="both_edu_college_higher" name="ethnic" value="both_edu_college_higher" >Bachelor's Degree or Higher</label></li>
+                            
+                <li><label for="both_lang_prof"><input type="radio" id="both_lang_prof" name="ethnic" value="both_lang_prof" >Language Proficiency</label></li>
+                <li><label for="both_disability"><input type="radio" id="both_disability" name="ethnic" value="both_disability" >Persons with a Disability</label></li>
+                <li><label for="both_unemployment"><input type="radio" id="both_unemployment" name="ethnic" value="both_unemployment" >Unemployment Rate (%)</label></li>
+                <li><label for="both_poverty"><input type="radio" id="both_poverty" name="ethnic" value="both_poverty" >Poverty Rate (%)</label> </li>              
+              </ul>
+            </li>
+            <li><h3 id="Asian" class="navButtons"><label for="asian"><input type="radio" id="asian" name="ethnic" value="asian" > Asian</label></h3>
+              <ul id="Asianmenu2" class="navSub">
+                <li><label for="asian_Male"><input type="radio" id="asian_Male" name="ethnic" value="asian_Male" >Male</label></li>
+                <li><label for="asian_Female"><input type="radio" id="asian_Female" name="ethnic" value="asian_Female" >Female</label></li>  
+
+                <li><label for="asian_age_18_24"><input type="radio" id="asian_age_18_24" name="ethnic" value="asian_age_18_24" >Ages 18-24</label> </li>
+                <li><label for="asian_age_25_54"><input type="radio" id="asian_age_25_54" name="ethnic" value="asian_age_25_54" >Ages 25-54</label> </li>
+                <li><label for="asian_age_55_over"><input type="radio" id="asian_age_55_over" name="ethnic" value="asian_age_55_over" >Ages 55 and Over</label></li>
+
+                <li><label for="asian_edu_less_than_high"><input type="radio" id="asian_edu_less_than_high" name="ethnic" value="asian_edu_less_than_high" >Less than High School Diploma</label> </li>
+                <li><label for="asian_edu_high_ged"><input type="radio" id="asian_edu_high_ged" name="ethnic" value="asian_edu_high_ged" >High School Graduate or GED</label> </li>
+                <li><label for="asian_edu_some_college"><input type="radio" id="asian_edu_some_college" name="ethnic" value="asian_edu_some_college" >Some College or Associate's Degree</label></li>
+                <li><label for="asian_edu_college_higher"><input type="radio" id="asian_edu_college_higher" name="ethnic" value="asian_edu_college_higher" >Bachelor's Degree or Higher</label></li>                
+
+                <li><label for="asian_lang_prof"><input type="radio" id="asian_lang_prof" name="ethnic" value="asian_lang_prof" >Language Proficiency</label></li>
+
+                <li><label for="asian_disability"><input type="radio" id="asian_disability" name="ethnic" value="asian_disability" >Persons with a Disability</label></li>                            
+                <li><label for="asian_Unemployment"><input type="radio" id="asian_Unemployment" name="ethnic" value="asian_Unemployment" >Unemployment Rate (%)</label></li>
+                <li><label for="asian_poverty"><input type="radio" id="asian_poverty" name="ethnic" value="asian_poverty" >Poverty Rate (%)</label> </li>
+              </ul>
+            </li>
+            <li><h3 id="Pacific" class="navButtons"><label for="hawaiian"><input type="radio" id="hawaiian" name="ethnic" value="hawaiian"> Pacific Islander</label></h3>
+              <ul id="Pacificmenu2" class="navSub">
+                <li><label for="hawaiian_Male"><input type="radio" id="hawaiian_Male" name="ethnic" value="hawaiian_Male" >Male</label></li>
+                <li><label for="hawaiian_Female"><input type="radio" id="hawaiian_Female" name="ethnic" value="hawaiian_Female" >Female</label></li> 
+
+                <li><label for="hawaiian_age_18_24"><input type="radio" id="hawaiian_age_18_24" name="ethnic" value="hawaiian_age_18_24" >Ages 18-24</label> </li>
+                <li><label for="hawaiian_age_25_54"><input type="radio" id="hawaiian_age_25_54" name="ethnic" value="hawaiian_age_25_54" >Ages 25-54</label> </li>
+                <li><label for="hawaiian_age_55_over"><input type="radio" id="hawaiian_age_55_over" name="ethnic" value="hawaiian_age_55_over" >Ages 55 and Over</label></li>
+
+                <li><label for="hawaiian_edu_less_than_high"><input type="radio" id="hawaiian_edu_less_than_high" name="ethnic" value="hawaiian_edu_less_than_high" >Less than High School Diploma</label> </li>
+                <li><label for="hawaiian_edu_high_ged"><input type="radio" id="hawaiian_edu_high_ged" name="ethnic" value="hawaiian_edu_high_ged" >High School Graduate or GED</label> </li>
+                <li><label for="hawaiian_edu_some_college"><input type="radio" id="hawaiian_edu_some_college" name="ethnic" value="hawaiian_edu_some_college" >Some College or Associate's Degree</label></li>
+                <li><label for="hawaiian_edu_college_higher"><input type="radio" id="hawaiian_edu_college_higher" name="ethnic" value="hawaiian_edu_college_higher" >Bachelor's Degree or Higher</label></li>
+
+                <li><label for="hawaiian_lang_prof"><input type="radio" id="hawaiian_lang_prof" name="ethnic" value="hawaiian_lang_prof" >Language Proficiency</label></li>
+                <li><label for="hawaiian_disability"><input type="radio" id="hawaiian_disability" name="ethnic" value="hawaiian_disability" >Persons with a Disability</label></li>              
+             
+                <li><label for="hawaiian_Unemployment"><input type="radio" id="hawaiian_Unemployment" name="ethnic" value="hawaiian_Unemployment" >Unemployment Rate (%)</label></li>
+                <li><label for="hawaiian_poverty"><input type="radio" id="hawaiian_poverty" name="ethnic" value="hawaiian_poverty" >Poverty Rate (%)</label> </li>
+              </ul>
+            </li>      
+            <li><h3 id="African" class="navButtons"><label for="african"><input type="radio" id="african" name="ethnic" value="african"> African</label></h3>
+              <ul id="Africanmenu2" class="navSub">
+                <li><label for="hawaiian_Male"><input type="radio" id="hawaiian_Male" name="ethnic" value="hawaiian_Male" >Male</label></li>
+                <li><label for="hawaiian_Female"><input type="radio" id="hawaiian_Female" name="ethnic" value="hawaiian_Female" >Female</label></li> 
+
+                <li><label for="hawaiian_age_18_24"><input type="radio" id="hawaiian_age_18_24" name="ethnic" value="hawaiian_age_18_24" >Ages 18-24</label> </li>
+                <li><label for="hawaiian_age_25_54"><input type="radio" id="hawaiian_age_25_54" name="ethnic" value="hawaiian_age_25_54" >Ages 25-54</label> </li>
+                <li><label for="hawaiian_age_55_over"><input type="radio" id="hawaiian_age_55_over" name="ethnic" value="hawaiian_age_55_over" >Ages 55 and Over</label></li>
+
+                <li><label for="hawaiian_edu_less_than_high"><input type="radio" id="hawaiian_edu_less_than_high" name="ethnic" value="hawaiian_edu_less_than_high" >Less than High School Diploma</label> </li>
+                <li><label for="hawaiian_edu_high_ged"><input type="radio" id="hawaiian_edu_high_ged" name="ethnic" value="hawaiian_edu_high_ged" >High School Graduate or GED</label> </li>
+                <li><label for="hawaiian_edu_some_college"><input type="radio" id="hawaiian_edu_some_college" name="ethnic" value="hawaiian_edu_some_college" >Some College or Associate's Degree</label></li>
+                <li><label for="hawaiian_edu_college_higher"><input type="radio" id="hawaiian_edu_college_higher" name="ethnic" value="hawaiian_edu_college_higher" >Bachelor's Degree or Higher</label></li>
+
+                <li><label for="hawaiian_lang_prof"><input type="radio" id="hawaiian_lang_prof" name="ethnic" value="hawaiian_lang_prof" >Language Proficiency</label></li>
+                <li><label for="hawaiian_disability"><input type="radio" id="hawaiian_disability" name="ethnic" value="hawaiian_disability" >Persons with a Disability</label></li>              
+             
+                <li><label for="hawaiian_Unemployment"><input type="radio" id="hawaiian_Unemployment" name="ethnic" value="hawaiian_Unemployment" >Unemployment Rate (%)</label></li>
+                <li><label for="hawaiian_poverty"><input type="radio" id="hawaiian_poverty" name="ethnic" value="hawaiian_poverty" >Poverty Rate (%)</label> </li>
+              </ul>
+            </li>      
+            <li><h3 id="Hispanics" class="navButtons"><label for="hispanics"><input type="radio" id="hispanics" name="ethnic" value="hispanics"> Hispanics</label></h3>
+              <ul id="Hispanicsmenu2" class="navSub">
+                <li><label for="hawaiian_Male"><input type="radio" id="hawaiian_Male" name="ethnic" value="hawaiian_Male" >Male</label></li>
+                <li><label for="hawaiian_Female"><input type="radio" id="hawaiian_Female" name="ethnic" value="hawaiian_Female" >Female</label></li> 
+
+                <li><label for="hawaiian_age_18_24"><input type="radio" id="hawaiian_age_18_24" name="ethnic" value="hawaiian_age_18_24" >Ages 18-24</label> </li>
+                <li><label for="hawaiian_age_25_54"><input type="radio" id="hawaiian_age_25_54" name="ethnic" value="hawaiian_age_25_54" >Ages 25-54</label> </li>
+                <li><label for="hawaiian_age_55_over"><input type="radio" id="hawaiian_age_55_over" name="ethnic" value="hawaiian_age_55_over" >Ages 55 and Over</label></li>
+
+                <li><label for="hawaiian_edu_less_than_high"><input type="radio" id="hawaiian_edu_less_than_high" name="ethnic" value="hawaiian_edu_less_than_high" >Less than High School Diploma</label> </li>
+                <li><label for="hawaiian_edu_high_ged"><input type="radio" id="hawaiian_edu_high_ged" name="ethnic" value="hawaiian_edu_high_ged" >High School Graduate or GED</label> </li>
+                <li><label for="hawaiian_edu_some_college"><input type="radio" id="hawaiian_edu_some_college" name="ethnic" value="hawaiian_edu_some_college" >Some College or Associate's Degree</label></li>
+                <li><label for="hawaiian_edu_college_higher"><input type="radio" id="hawaiian_edu_college_higher" name="ethnic" value="hawaiian_edu_college_higher" >Bachelor's Degree or Higher</label></li>
+
+                <li><label for="hawaiian_lang_prof"><input type="radio" id="hawaiian_lang_prof" name="ethnic" value="hawaiian_lang_prof" >Language Proficiency</label></li>
+                <li><label for="hawaiian_disability"><input type="radio" id="hawaiian_disability" name="ethnic" value="hawaiian_disability" >Persons with a Disability</label></li>              
+             
+                <li><label for="hawaiian_Unemployment"><input type="radio" id="hawaiian_Unemployment" name="ethnic" value="hawaiian_Unemployment" >Unemployment Rate (%)</label></li>
+                <li><label for="hawaiian_poverty"><input type="radio" id="hawaiian_poverty" name="ethnic" value="hawaiian_poverty" >Poverty Rate (%)</label> </li>
+              </ul>
+            </li>      
+          </ul>
+        </form>
+        
+        <form id="jobCenterButtons"> 
+          <ul class="menu1">
+            <li> 
+              <label for="jobC"><input type="checkbox" id="jobC" name="jobC" value="hideTree" >
+              Show Treemap</label><br />  
+            </li>     
+          </ul>
+        </form>      
+      </div>
+     
+    </div>
+    <div class="legendDiv"></div>
+  </div>
+
+  <div id="treemapPopup"></div>
+</div>
+<div id="dashboardA"> </div>
+  <!-- Can be enabled later 
+  <div id="barchartPopup"></div>
+  <svg class="chart"></svg>-->
+  <script> //L_PREFER_CANVAS = true; </script>
+  <script src="blackBox/js/leaflet_d3_JQ_Unified.js"></script>  
+  <script src="blackBox/js/leafletMap_dev.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+        $('#treemapPopup').hide();
+        $( "#menu" ).menu();
+
+        $("#dashboardA").mouseout(function() {
+          $('#treemapPopup').hide();         
+        });
+
+        //Nav
+        $("#Bothmenu2").show();
+        $("#Asianmenu2").hide();
+        $("#Pacificmenu2").hide();
+        $("#Africanmenu2").hide();
+        $("#Hispanicsmenu2").hide();
+
+        $(".navButtons").click(function(){
+          $('.navSub').slideUp("slow");
+          $(this).next('.navSub').slideDown("slow");
+        });
+        
+        $("#NavDisplayControle").click(function(){
+          $("#mapControls").slideToggle( "slow" );
+        });
+
+        /*var mapTimeOut; 
+        $("#mainWrapper").mouseover(function(){
+          console.log('timer started '+$.cache);
+
+          mapTimeOut = setTimeout(function() {
+            console.log('memory cleared');
+          }, 10000);
+        });
+
+        $('#dashboardA').mouseover(function() {
+          console.log('timer cleared');
+          if (mapTimeOut) {
+            clearTimeout(mapTimeOut);
+          }
+        }); */
+      });
+
+    
+
+    (function ($) {
+        "use strict";
+        // Detecting IE
+        var oldIE;
+        if ($('html').is('.ie6, .ie7, .ie8, .ie9')) {
+            oldIE = true;
+        }
+        if (oldIE) {
+            alert("This App does not work well in earlier versions of Internet Explorer (IE). Please IE 10 or greater, thank you.")
+        } 
+    }(jQuery));
+  </script>
+</body>
+</html>
