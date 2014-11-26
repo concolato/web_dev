@@ -1,0 +1,255 @@
+svg {
+  font: 10px sans-serif;
+}
+#dashboardA div {
+  font: 11px sans-serif;
+  margin: 1px;
+}
+.chart{
+top:-20px;
+}
+.chart rect {
+fill: #800026;
+}
+.chart text {
+fill: white;
+font: 10px sans-serif;
+text-anchor: middle;
+}
+.chart{
+  margin: 0 auto;
+  width: 1200px;
+  background: #ccc;
+  height: 120px;
+  clear: both;
+  position: relative;
+  top: -155px;
+  left: 151px;
+}
+#barchartPopup{
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 15px;
+
+  width:185px;
+  height: 8%;
+  position: absolute;
+  font-size: 10pt;
+  color:#555;
+  z-index: 999;
+}
+.bar:hover{
+  fill:#3d3d3d;
+}
+.bar {
+  fill: steelblue;
+  fill-opacity: .9;
+}
+/*
+.ethnicSwitch{
+  height: 70px;
+  top:-460px !important;
+}
+.jobCenterSwitch{
+  height: 30px;
+  top:-443px !important;
+}
+*/
+.ethnicSwitch, .jobCenterSwitch{
+  /*width:130px; 
+  overflow: hidden;
+  font-size: 14px;
+  float:right;
+  left:155px;
+  cursor: auto;
+  position: relative;
+
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  font: 14px/16px Arial,Helvetica,sans-serif;
+  padding: 6px 8px;
+  color: #3d3d3d;
+  clear:both;*/
+}
+
+#treemap{
+  margin: auto 0px;
+}
+#treeMapControls{
+  width: 140px;
+  height: 17pt;
+  color: #3D3D3D;
+  font-size: 13px !important;
+}
+#treemapPopup{
+  width: auto; /*205px;*/
+  max-width: 250px;
+  min-width: 205px;
+  background: #fff;
+  z-index: 9999;
+  position: absolute;;
+}
+
+.info, .dashtitle, .info2, #treeMapControls, #treemapPopup{
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  margin:5px 5px 10px 10px !important;
+  z-index: 9999;
+}
+.info h4, .info2 h4 {
+  margin: 0 0 5px;
+  color: #777;
+}
+.legend{
+  left:160px;
+  width:130px;
+  z-index: 999;
+  top: -140px;
+  line-height: 16px !important;
+}
+.legend, .legend2 {
+    line-height: 14.5px;
+    color: #555;
+    font-size: .80em;
+}
+.legend i, .legend2 i {
+    width: 13px;
+    height: 13px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+#MapFullClick{
+	color:#0066FF;
+	font-size: .81em;
+	cursor: pointer;
+	float: left;
+	width:100px;
+	position: absolute;
+	top: 10px;
+	margin-left: 190px;
+}
+#MapClick{
+	z-index: 2000;
+	width:50px;
+	float: left;
+	background: #CCC;
+	cursor: pointer;
+}
+
+#mapdiv{
+  height: 620px;
+}
+
+#mapControls{
+  background: #F6F6F6;
+  font-size: 1.1em;
+  font-family: sans-serif;
+  z-index:999;
+  opacity: 0.8;
+}
+
+#mapControls h3{
+  font-size: 1.0em;
+  margin: 0px;
+  border: 1px dotted #ccc;
+}
+
+#mapControls h3:hover{background:#ccc; }
+
+#NavDisplayControle{width:40px; margin-left: 265px; color:#FF00FF; cursor: pointer;}
+#navWrapper{
+  width: 325px;
+  float:right;
+  position: relative;
+  margin: 150px 5px;
+  z-index:999;
+}
+#mainWrapper{
+  /*width:1535px;*/
+}
+.legendDiv{
+  float: left;
+  margin-top: 420px;
+  position: relative;
+  z-index: 999;
+}
+#populationBox{ width:355px;}
+#Both, #Asian, #Pacific{ cursor: pointer;}
+
+.menu1{padding: 0; list-style: none outside none; margin: 0;}
+#Bothmenu2, #Asianmenu2, #Pacificmenu2{list-style: none  none;}
+#menu1 label, #Bothmenu2 label, #Asianmenu2 label, #Pacificmenu2 label{cursor: pointer;}
+
+#dashboardA {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  /*width: 1400px;
+  background-color:#B7D2D2;
+  color:#fff;*/
+}
+.leaflet-top.leaflet-left{
+  top:105px;
+}
+.treemapNodeHighlight{
+  background: #000 !important;
+  opacity: 1.0 !important;
+  border: solid 1px black !important;
+}
+.node {
+  border: solid 1px white;
+  font: 13px helvetica;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+  opacity: 0.6;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+form {
+  left: 5px;
+  top: 3px;
+}
+
+#dashboardB {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 985px;
+  background:#000;
+  color:#ccc;
+}
+
+button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.title{
+    color:#555555;
+    width:180pt; float:right; padding:5px; margin:5px 10px 5px 5px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size:11px;
+}
+.controls{
+    color:#555555;
+    width:100pt; height: 15px; float:left; 
+    padding:5px; margin:5px 0px 0px 10px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size:11px;
+}
