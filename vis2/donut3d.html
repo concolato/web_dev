@@ -46,9 +46,10 @@ svg text.percent{
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
 <script>
+pieChart3dCore();
 PieChart3d();
 
-!function(){
+function pieChart3dCore(){
 	var Donut3D={};
 	
 	function pieTop(d, rx, ry, ir ){
@@ -170,7 +171,7 @@ PieChart3d();
 	}
 	
 	this.Donut3D = Donut3D;
-}();
+}
 
 function PieChart3d(){
 	d3.json("blackBox/js/asianSubGroupsPerMSA.json", function(statesData) {
@@ -178,14 +179,14 @@ function PieChart3d(){
 
 		var svg = d3.select("body").append("svg").attr("width",700).attr("height",300);
 		var tooltip = d3.select(".pieChartPopup");
-		var datum2 = getData(MSA), datum = getNationalSubGroupData();
+		var datum2 = getData(MSA), datum = getNationalSubGroupData(), msaSubData = [], tooltipLabel = "";
 		//console.log(datum);
 
 		//concider making a function				
 		var nationalSubGroup = svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
 		var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
 												//X,  Y,   W,   H,  H Thickness, W thickness
-		Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 130, 100, 30, 0);
+		Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 150, 130, 0, 0);
 		var wedges = nationalSubGroup.selectAll("path.topSlice")
 			.on("mousemove", function(d){
 				mousex = d3.mouse(this);
@@ -206,11 +207,16 @@ function PieChart3d(){
 			.on("mousemove", function(d){
 				mousex = d3.mouse(this);
 	        	mousex = mousex[0] + 400;
-	        	//console.log(d);
 
 	        	d3.select(this).classed("hover", true);
+	        	//Not sure if this is the best solution but here it is
+	        	if(d.label == undefined){
+	        		tooltipLabel = d.data.label;
+	        	}else{
+	        		tooltipLabel = d.label;
+	        	}
 
-			    tooltip.html(d.label+": " + d.value).style("visibility", "visible").style("left", mousex + "px" );
+			    tooltip.html(tooltipLabel+": " + d.value).style("visibility", "visible").style("left", mousex + "px" );
 			})
 			.on("mouseout", function(){
 				tooltip.style("visibility", "hidden");
@@ -218,10 +224,12 @@ function PieChart3d(){
 		wedges2.data(datum2).enter();
 
 		d3.select("#Both").on("click", function(){
-			d3.selectAll(".pieChart").transition(1000).remove();
+			//d3.selectAll(".pieChart").transition(1000).remove();
+			d3.selectAll(".pieChart").style("opacity", 0);
 		});
 		d3.select("#Asian").on("click", function(){
-			changeGroupData(MSA);
+			//changeGroupData(MSA);
+			d3.selectAll(".pieChart").style("opacity", 1);
 		});
 
 		d3.selectAll(".leaflet-clickable").on("click", function(){
@@ -231,6 +239,10 @@ function PieChart3d(){
 		
 		function changeSubGroupData(msa){
 			var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
+			datum2 = {};
+			//datum2 = getData(MSA);
+			wedges2.data(datum2).enter();
+
 			Donut3D.transition("MsaSubGroupData", getData(msa), 130, 100, 30, 0.4);
 		}
 		
@@ -239,12 +251,12 @@ function PieChart3d(){
 			svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
 
 			Donut3D.draw("MsaSubGroupData", getData(msa), 450, 150, 130, 100, 30, 0.4);
-			//Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 130, 100, 30, 0); //will cause map error
+			Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 150, 120, 30, 0); //will cause map error
 		}
 
 		function getData(msa){
 			var needle = msa //.replace(/[\W\s]/g,"");
-			var i=0, msaSubData = [], msaSubTotals;
+			var i=0, msaSubTotals;
 			
 			for(i; i < statesData.length; i++){
 				//console.log(statesData[i]);				
