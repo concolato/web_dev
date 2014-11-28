@@ -6,6 +6,14 @@
    <!--<link rel="stylesheet" href="blackBox/css/jquery-ui.css" /> -->
 	<style type="text/css">
 		/* Test New CSS */
+    #piecharts{
+        width: 480px;
+        height: 240px;
+        background-color: #F6F6F6;
+        margin: 0px 0px 10px 10px;
+        z-index:999;
+        opacity: 0.8;
+      }
 
     /* End Test */
     @-moz-document url-prefix() {
@@ -29,7 +37,7 @@
       }
       .legendDiv{
         float: left;
-        margin-top: 570px;
+        margin-top: 240px;
         position: relative;
         z-index: 999;
       }
@@ -40,7 +48,6 @@
         margin: 150px 5px;
         z-index:999;
       }
-
       #mapdiv{
         height: 820px;
       }
@@ -189,7 +196,12 @@
       </div>
      
     </div>
-    <div class="legendDiv"></div>
+
+    
+    <div class="legendDiv">
+      <div id="PieChartDisplayControle">Hide/Show</div>
+      <div id="piecharts">TEST</div>
+    </div>
   </div>
 
   <div id="treemapPopup"></div>
@@ -224,6 +236,10 @@
         
         $("#NavDisplayControle").click(function(){
           $("#mapControls").slideToggle( "slow" );
+        });
+
+        $("#PieChartDisplayControle").click(function(){
+          $("#piecharts").slideToggle( "slow" );
         });
 
         /*var mapTimeOut; 

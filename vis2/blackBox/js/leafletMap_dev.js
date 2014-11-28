@@ -1,6 +1,6 @@
 L.Control.FullScreen=L.Control.extend({options:{position:"topleft",title:"Full Screen",forceSeparateButton:false},onAdd:function(e){var t="leaflet-control-zoom-fullscreen",n;if(e.zoomControl&&!this.options.forceSeparateButton){n=e.zoomControl._container}else{n=L.DomUtil.create("div","leaflet-bar")}this._createButton(this.options.title,t,n,this.toogleFullScreen,e);return n},_createButton:function(e,t,n,r,i){var s=L.DomUtil.create("a",t,n);s.href="#";s.title=e;L.DomEvent.addListener(s,"click",L.DomEvent.stopPropagation).addListener(s,"click",L.DomEvent.preventDefault).addListener(s,"click",r,i);L.DomEvent.addListener(n,fullScreenApi.fullScreenEventName,L.DomEvent.stopPropagation).addListener(n,fullScreenApi.fullScreenEventName,L.DomEvent.preventDefault).addListener(n,fullScreenApi.fullScreenEventName,this._handleEscKey,i);L.DomEvent.addListener(document,fullScreenApi.fullScreenEventName,L.DomEvent.stopPropagation).addListener(document,fullScreenApi.fullScreenEventName,L.DomEvent.preventDefault).addListener(document,fullScreenApi.fullScreenEventName,this._handleEscKey,i);return s},toogleFullScreen:function(){this._exitFired=false;var e=this._container;if(this._isFullscreen){if(fullScreenApi.supportsFullScreen){fullScreenApi.cancelFullScreen(e)}else{L.DomUtil.removeClass(e,"leaflet-pseudo-fullscreen")}this.invalidateSize();this.fire("exitFullscreen");this._exitFired=true;this._isFullscreen=false}else{if(fullScreenApi.supportsFullScreen){fullScreenApi.requestFullScreen(e)}else{L.DomUtil.addClass(e,"leaflet-pseudo-fullscreen")}this.invalidateSize();this.fire("enterFullscreen");this._isFullscreen=true}},_handleEscKey:function(){if(!fullScreenApi.isFullScreen(this)&&!this._exitFired){this.fire("exitFullscreen");this._exitFired=true;this._isFullscreen=false}}});L.Map.addInitHook(function(){if(this.options.fullscreenControl){this.fullscreenControl=L.control.fullscreen(this.options.fullscreenControlOptions);this.addControl(this.fullscreenControl)}});L.control.fullscreen=function(e){return new L.Control.FullScreen(e)};(function(){var e={supportsFullScreen:false,isFullScreen:function(){return false},requestFullScreen:function(){},cancelFullScreen:function(){},fullScreenEventName:"",prefix:""},t="webkit moz o ms khtml".split(" ");if(typeof document.exitFullscreen!="undefined"){e.supportsFullScreen=true}else{for(var n=0,r=t.length;n<r;n++){e.prefix=t[n];if(typeof document[e.prefix+"CancelFullScreen"]!="undefined"){e.supportsFullScreen=true;break}}}if(e.supportsFullScreen){e.fullScreenEventName=e.prefix+"fullscreenchange";e.isFullScreen=function(){switch(this.prefix){case"":return document.fullScreen;case"webkit":return document.webkitIsFullScreen;default:return document[this.prefix+"FullScreen"]}};e.requestFullScreen=function(e){return this.prefix===""?e.requestFullscreen():e[this.prefix+"RequestFullScreen"](Element.ALLOW_KEYBOARD_INPUT)};e.cancelFullScreen=function(e){return this.prefix===""?document.exitFullscreen():document[this.prefix+"CancelFullScreen"]()}}if(typeof jQuery!="undefined"){jQuery.fn.requestFullScreen=function(){return this.each(function(){var t=jQuery(this);if(e.supportsFullScreen){e.requestFullScreen(t)}})}}window.fullScreenApi=e})()
 
-d3.json("blackBox/js/oasp.json", function(statesData) { 
+d3.json("blackBox/js/oasp_dev.json", function(statesData) { 
   //Class for customizing icons on zoom
   console.log(statesData);
   
@@ -58,128 +58,278 @@ d3.json("blackBox/js/oasp.json", function(statesData) {
   }
 
   function pieChart3dCore(){
-  var Donut3D={};
-  
-  function pieTop(d, rx, ry, ir ){
-    if(d.endAngle - d.startAngle == 0 ) return "M 0 0";
-    var sx = rx*Math.cos(d.startAngle),
-      sy = ry*Math.sin(d.startAngle),
-      ex = rx*Math.cos(d.endAngle),
-      ey = ry*Math.sin(d.endAngle);
-      
-    var ret =[];
-    ret.push("M",sx,sy,"A",rx,ry,"0",(d.endAngle-d.startAngle > Math.PI? 1: 0),"1",ex,ey,"L",ir*ex,ir*ey);
-    ret.push("A",ir*rx,ir*ry,"0",(d.endAngle-d.startAngle > Math.PI? 1: 0), "0",ir*sx,ir*sy,"z");
-    return ret.join(" ");
-  }
-
-  function pieOuter(d, rx, ry, h ){
-    var startAngle = (d.startAngle > Math.PI ? Math.PI : d.startAngle);
-    var endAngle = (d.endAngle > Math.PI ? Math.PI : d.endAngle);
+    var Donut3D={};
     
-    var sx = rx*Math.cos(startAngle),
-      sy = ry*Math.sin(startAngle),
-      ex = rx*Math.cos(endAngle),
-      ey = ry*Math.sin(endAngle);
-      
+    function pieTop(d, rx, ry, ir ){
+      if(d.endAngle - d.startAngle == 0 ) return "M 0 0";
+      var sx = rx*Math.cos(d.startAngle),
+        sy = ry*Math.sin(d.startAngle),
+        ex = rx*Math.cos(d.endAngle),
+        ey = ry*Math.sin(d.endAngle);
+        
       var ret =[];
-      ret.push("M",sx,h+sy,"A",rx,ry,"0 0 1",ex,h+ey,"L",ex,ey,"A",rx,ry,"0 0 0",sx,sy,"z");
+      ret.push("M",sx,sy,"A",rx,ry,"0",(d.endAngle-d.startAngle > Math.PI? 1: 0),"1",ex,ey,"L",ir*ex,ir*ey);
+      ret.push("A",ir*rx,ir*ry,"0",(d.endAngle-d.startAngle > Math.PI? 1: 0), "0",ir*sx,ir*sy,"z");
       return ret.join(" ");
+    }
+
+    function pieOuter(d, rx, ry, h ){
+      var startAngle = (d.startAngle > Math.PI ? Math.PI : d.startAngle);
+      var endAngle = (d.endAngle > Math.PI ? Math.PI : d.endAngle);
+      
+      var sx = rx*Math.cos(startAngle),
+        sy = ry*Math.sin(startAngle),
+        ex = rx*Math.cos(endAngle),
+        ey = ry*Math.sin(endAngle);
+        
+        var ret =[];
+        ret.push("M",sx,h+sy,"A",rx,ry,"0 0 1",ex,h+ey,"L",ex,ey,"A",rx,ry,"0 0 0",sx,sy,"z");
+        return ret.join(" ");
+    }
+
+    function pieInner(d, rx, ry, h, ir ){
+      var startAngle = (d.startAngle < Math.PI ? Math.PI : d.startAngle);
+      var endAngle = (d.endAngle < Math.PI ? Math.PI : d.endAngle);
+      
+      var sx = ir*rx*Math.cos(startAngle),
+        sy = ir*ry*Math.sin(startAngle),
+        ex = ir*rx*Math.cos(endAngle),
+        ey = ir*ry*Math.sin(endAngle);
+
+        var ret =[];
+        ret.push("M",sx, sy,"A",ir*rx,ir*ry,"0 0 1",ex,ey, "L",ex,h+ey,"A",ir*rx, ir*ry,"0 0 0",sx,h+sy,"z");
+        return ret.join(" ");
+    }
+
+    function getPercent(d){
+      return (d.endAngle-d.startAngle > 0.2 ? 
+          Math.round(1000*(d.endAngle-d.startAngle)/(Math.PI*2))/10+'%' : '');
+    } 
+    
+    Donut3D.transition = function(id, data, rx, ry, h, ir){
+      function arcTweenInner(a) {
+        var i = d3.interpolate(this._current, a);
+        this._current = i(0);
+        return function(t) { return pieInner(i(t), rx+0.5, ry+0.5, h, ir);  };
+      }
+      function arcTweenTop(a) {
+        var i = d3.interpolate(this._current, a);
+        this._current = i(0);
+        return function(t) { return pieTop(i(t), rx, ry, ir);  };
+      }
+      function arcTweenOuter(a) {
+        var i = d3.interpolate(this._current, a);
+        this._current = i(0);
+        return function(t) { return pieOuter(i(t), rx-.5, ry-.5, h);  };
+      }
+      function textTweenX(a) {
+        var i = d3.interpolate(this._current, a);
+        this._current = i(0);
+        return function(t) { return 0.6*rx*Math.cos(0.5*(i(t).startAngle+i(t).endAngle));  };
+      }
+      function textTweenY(a) {
+        var i = d3.interpolate(this._current, a);
+        this._current = i(0);
+        return function(t) { return 0.6*rx*Math.sin(0.5*(i(t).startAngle+i(t).endAngle));  };
+      }
+      
+      var _data = d3.layout.pie().sort(null).value(function(d) {return d.value;})(data);
+      
+      d3.select("#"+id).selectAll(".innerSlice").data(_data)
+        .transition().duration(750).attrTween("d", arcTweenInner); 
+        
+      d3.select("#"+id).selectAll(".topSlice").data(_data)
+        .transition().duration(750).attrTween("d", arcTweenTop); 
+        
+      d3.select("#"+id).selectAll(".outerSlice").data(_data)
+        .transition().duration(750).attrTween("d", arcTweenOuter);  
+        
+      d3.select("#"+id).selectAll(".percent").data(_data).transition().duration(750)
+        .attrTween("x",textTweenX).attrTween("y",textTweenY).text(getPercent);  
+    }
+    
+    Donut3D.draw=function(id, data, x /*center x*/, y/*center y*/, 
+        rx/*radius x*/, ry/*radius y*/, h/*height*/, ir/*inner radius*/){
+    
+      var _data = d3.layout.pie().sort(null).value(function(d) {return d.value;})(data);
+      
+      var slices = d3.select("#"+id).append("g").attr("transform", "translate(" + x + "," + y + ")")
+        .attr("class", "slices");
+        
+      slices.selectAll(".innerSlice").data(_data).enter().append("path").attr("class", "innerSlice")
+        .style("fill", function(d) { return d3.hsl(d.data.color).darker(0.7); })
+        .attr("d",function(d){ return pieInner(d, rx+0.5,ry+0.5, h, ir);})
+        .each(function(d){this._current=d;});
+      
+      slices.selectAll(".topSlice").data(_data).enter().append("path").attr("class", "topSlice")
+        .style("fill", function(d) { return d.data.color; })
+        .style("stroke", function(d) { return d.data.color; })
+        .attr("d",function(d){ return pieTop(d, rx, ry, ir);})
+        .each(function(d){this._current=d;});
+      
+      slices.selectAll(".outerSlice").data(_data).enter().append("path").attr("class", "outerSlice")
+        .style("fill", function(d) { return d3.hsl(d.data.color).darker(0.7); })
+        .attr("d",function(d){ return pieOuter(d, rx-.5,ry-.5, h);})
+        .each(function(d){this._current=d;});
+
+      slices.selectAll(".percent").data(_data).enter().append("text").attr("class", "percent")
+        .attr("x",function(d){ return 0.6*rx*Math.cos(0.5*(d.startAngle+d.endAngle));})
+        .attr("y",function(d){ return 0.6*ry*Math.sin(0.5*(d.startAngle+d.endAngle));})
+        .text(getPercent).each(function(d){this._current=d;});        
+    }
+    
+    this.Donut3D = Donut3D;
   }
 
-  function pieInner(d, rx, ry, h, ir ){
-    var startAngle = (d.startAngle < Math.PI ? Math.PI : d.startAngle);
-    var endAngle = (d.endAngle < Math.PI ? Math.PI : d.endAngle);
-    
-    var sx = ir*rx*Math.cos(startAngle),
-      sy = ir*ry*Math.sin(startAngle),
-      ex = ir*rx*Math.cos(endAngle),
-      ey = ir*ry*Math.sin(endAngle);
+  function PieChart3d(){
+    d3.json("blackBox/js/asianSubGroupsPerMSA.json", function(statesData) {
+      var MSA = "Honolulu";
 
-      var ret =[];
-      ret.push("M",sx, sy,"A",ir*rx,ir*ry,"0 0 1",ex,ey, "L",ex,h+ey,"A",ir*rx, ir*ry,"0 0 0",sx,h+sy,"z");
-      return ret.join(" ");
-  }
+      var svg = d3.select("body").append("svg").attr("width",700).attr("height",300);
+      var tooltip = d3.select(".pieChartPopup");
+      var datum2 = getData(MSA), datum = getNationalSubGroupData(), msaSubData = [], tooltipLabel = "";
+      //console.log(datum);
 
-  function getPercent(d){
-    return (d.endAngle-d.startAngle > 0.2 ? 
-        Math.round(1000*(d.endAngle-d.startAngle)/(Math.PI*2))/10+'%' : '');
-  } 
-  
-  Donut3D.transition = function(id, data, rx, ry, h, ir){
-    function arcTweenInner(a) {
-      var i = d3.interpolate(this._current, a);
-      this._current = i(0);
-      return function(t) { return pieInner(i(t), rx+0.5, ry+0.5, h, ir);  };
-    }
-    function arcTweenTop(a) {
-      var i = d3.interpolate(this._current, a);
-      this._current = i(0);
-      return function(t) { return pieTop(i(t), rx, ry, ir);  };
-    }
-    function arcTweenOuter(a) {
-      var i = d3.interpolate(this._current, a);
-      this._current = i(0);
-      return function(t) { return pieOuter(i(t), rx-.5, ry-.5, h);  };
-    }
-    function textTweenX(a) {
-      var i = d3.interpolate(this._current, a);
-      this._current = i(0);
-      return function(t) { return 0.6*rx*Math.cos(0.5*(i(t).startAngle+i(t).endAngle));  };
-    }
-    function textTweenY(a) {
-      var i = d3.interpolate(this._current, a);
-      this._current = i(0);
-      return function(t) { return 0.6*rx*Math.sin(0.5*(i(t).startAngle+i(t).endAngle));  };
-    }
-    
-    var _data = d3.layout.pie().sort(null).value(function(d) {return d.value;})(data);
-    
-    d3.select("#"+id).selectAll(".innerSlice").data(_data)
-      .transition().duration(750).attrTween("d", arcTweenInner); 
-      
-    d3.select("#"+id).selectAll(".topSlice").data(_data)
-      .transition().duration(750).attrTween("d", arcTweenTop); 
-      
-    d3.select("#"+id).selectAll(".outerSlice").data(_data)
-      .transition().duration(750).attrTween("d", arcTweenOuter);  
-      
-    d3.select("#"+id).selectAll(".percent").data(_data).transition().duration(750)
-      .attrTween("x",textTweenX).attrTween("y",textTweenY).text(getPercent);  
-  }
-  
-  Donut3D.draw=function(id, data, x /*center x*/, y/*center y*/, 
-      rx/*radius x*/, ry/*radius y*/, h/*height*/, ir/*inner radius*/){
-  
-    var _data = d3.layout.pie().sort(null).value(function(d) {return d.value;})(data);
-    
-    var slices = d3.select("#"+id).append("g").attr("transform", "translate(" + x + "," + y + ")")
-      .attr("class", "slices");
-      
-    slices.selectAll(".innerSlice").data(_data).enter().append("path").attr("class", "innerSlice")
-      .style("fill", function(d) { return d3.hsl(d.data.color).darker(0.7); })
-      .attr("d",function(d){ return pieInner(d, rx+0.5,ry+0.5, h, ir);})
-      .each(function(d){this._current=d;});
-    
-    slices.selectAll(".topSlice").data(_data).enter().append("path").attr("class", "topSlice")
-      .style("fill", function(d) { return d.data.color; })
-      .style("stroke", function(d) { return d.data.color; })
-      .attr("d",function(d){ return pieTop(d, rx, ry, ir);})
-      .each(function(d){this._current=d;});
-    
-    slices.selectAll(".outerSlice").data(_data).enter().append("path").attr("class", "outerSlice")
-      .style("fill", function(d) { return d3.hsl(d.data.color).darker(0.7); })
-      .attr("d",function(d){ return pieOuter(d, rx-.5,ry-.5, h);})
-      .each(function(d){this._current=d;});
+      //concider making a function        
+      var nationalSubGroup = svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
+      var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
+                          //X,  Y,   W,   H,  H Thickness, W thickness
+      Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 150, 130, 0, 0);
+      var wedges = nationalSubGroup.selectAll("path.topSlice")
+        .on("mousemove", function(d){
+          mousex = d3.mouse(this);
+              mousex = mousex[0] + 100;
 
-    slices.selectAll(".percent").data(_data).enter().append("text").attr("class", "percent")
-      .attr("x",function(d){ return 0.6*rx*Math.cos(0.5*(d.startAngle+d.endAngle));})
-      .attr("y",function(d){ return 0.6*ry*Math.sin(0.5*(d.startAngle+d.endAngle));})
-      .text(getPercent).each(function(d){this._current=d;});        
+              d3.select(this).classed("hover", true);
+
+            tooltip.html(d.label+": " + d.value).style("visibility", "visible").style("left", mousex + "px" );
+        })
+        .on("mouseout", function(){
+          tooltip.style("visibility", "hidden");
+        });
+      wedges.data(datum).enter();
+
+      Donut3D.draw("MsaSubGroupData", getData(MSA), 450, 150, 130, 100, 30, 0.4);
+      var wedges2 = MsaSubGroup
+        .selectAll("path.topSlice")
+        .on("mousemove", function(d){
+          mousex = d3.mouse(this);
+              mousex = mousex[0] + 400;
+
+              d3.select(this).classed("hover", true);
+              //Not sure if this is the best solution but here it is
+              if(d.label == undefined){
+                tooltipLabel = d.data.label;
+              }else{
+                tooltipLabel = d.label;
+              }
+
+            tooltip.html(tooltipLabel+": " + d.value).style("visibility", "visible").style("left", mousex + "px" );
+        })
+        .on("mouseout", function(){
+          tooltip.style("visibility", "hidden");
+        });
+      wedges2.data(datum2).enter();
+
+      d3.select("#Both").on("click", function(){
+        //d3.selectAll(".pieChart").transition(1000).remove();
+        d3.selectAll(".pieChart").style("opacity", 0);
+      });
+      d3.select("#Asian").on("click", function(){
+        //changeGroupData(MSA);
+        d3.selectAll(".pieChart").style("opacity", 1);
+      });
+
+      d3.selectAll(".leaflet-clickable").on("click", function(){
+        msa = d3.select(this).attr('id'); 
+        changeSubGroupData(msa);
+      });
+      
+      function changeSubGroupData(msa){
+        var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
+        datum2 = {};
+        //datum2 = getData(MSA);
+        wedges2.data(datum2).enter();
+
+        Donut3D.transition("MsaSubGroupData", getData(msa), 130, 100, 30, 0.4);
+      }
+      
+      function changeGroupData(msa){
+        svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
+        svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
+
+        Donut3D.draw("MsaSubGroupData", getData(msa), 450, 150, 130, 100, 30, 0.4);
+        Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 150, 120, 30, 0); //will cause map error
+      }
+
+      function getData(msa){
+        var needle = msa //.replace(/[\W\s]/g,"");
+        var i=0, msaSubTotals;
+        
+        for(i; i < statesData.length; i++){
+          //console.log(statesData[i]);       
+          if(statesData[i].Metro_Area == needle){
+            msaSubData=[
+              {label:"Asian_Indian", color:"#3366CC", value:parseInt(statesData[i].Asian_Indian.replace(/,/g, ''))},
+              {label:"Bangladeshi", color:"#DC3912", value:parseInt(statesData[i].Bangladeshi.replace(/,/g, ''))},
+              {label:"Cambodian", color:"#109618", value:parseInt(statesData[i].Cambodian.replace(/,/g, ''))},
+              {label:"Chinese", color:"#990099", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
+              {label:"Filipino", color:"#3366CC", value:parseInt(statesData[i].Filipino.replace(/,/g, ''))},
+              {label:"Hmong", color:"#DC3912", value:parseInt(statesData[i].Hmong.replace(/,/g, ''))},
+              {label:"Indonesian", color:"#CCC", value:parseInt(statesData[i].Indonesian.replace(/,/g, ''))},
+              {label:"Japanese", color:"#FF9900", value:parseInt(statesData[i].Japanese.replace(/,/g, ''))},
+              {label:"Korean", color:"#109618", value:parseInt(statesData[i].Korean.replace(/,/g, ''))},
+              {label:"Laotian", color:"#990099", value:parseInt(statesData[i].Laotian.replace(/,/g, ''))},
+              {label:"Malaysian", color:"#3366CC", value: parseInt(statesData[i].Malaysian.replace(/,/g, ''))},
+              {label:"Pakistani", color:"#109618", value:parseInt(statesData[i].Pakistani.replace(/,/g, ''))},
+              {label:"Sri_Lankan", color:"#990099", value:parseInt(statesData[i].Sri_Lankan.replace(/,/g, ''))},
+              {label:"Taiwanese", color:"#3366CC", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
+              {label:"Thai", color:"#CCC", value:parseInt(statesData[i].Thai.replace(/,/g, ''))},
+              {label:"Vietnamese", color:"#FF9900", value:parseInt(statesData[i].Vietnamese.replace(/,/g, ''))},
+              {label:"Other_Asian", color:"#109618", value:parseInt(statesData[i].Other_Asian.replace(/,/g, ''))},
+              {label:"Other_Asian_not_specified", color:"#109618", value:parseInt(statesData[i].Other_Asian_not_specified.replace(/,/g, ''))}
+            ];
+          }
+        }
+        return msaSubData;
+      }
+
+      function getNationalSubGroupData(){
+        //Temporarily Hard Coded
+        var needle = "Abilene".replace(/[\W\s]/g,"");
+        var i=0, msaSubData = [], msaSubTotals;
+      
+        for(i; i < statesData.length; i++){
+          //console.log(statesData[i]);       
+          if(statesData[i].Metro_Area == needle){
+            msaSubData=[
+              {label:"Asian_Indian", color:"#3366CC", value:parseInt(statesData[i].Asian_Indian.replace(/,/g, ''))},
+              {label:"Bangladeshi", color:"#DC3912", value:parseInt(statesData[i].Bangladeshi.replace(/,/g, ''))},
+              {label:"Cambodian", color:"#109618", value:parseInt(statesData[i].Cambodian.replace(/,/g, ''))},
+              {label:"Chinese", color:"#990099", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
+              {label:"Filipino", color:"#3366CC", value:parseInt(statesData[i].Filipino.replace(/,/g, ''))},
+              {label:"Hmong", color:"#DC3912", value:parseInt(statesData[i].Hmong.replace(/,/g, ''))},
+              {label:"Indonesian", color:"#CCC", value:parseInt(statesData[i].Indonesian.replace(/,/g, ''))},
+              {label:"Japanese", color:"#FF9900", value:parseInt(statesData[i].Japanese.replace(/,/g, ''))},
+              {label:"Korean", color:"#109618", value:parseInt(statesData[i].Korean.replace(/,/g, ''))},
+              {label:"Laotian", color:"#990099", value:parseInt(statesData[i].Laotian.replace(/,/g, ''))},
+              {label:"Malaysian", color:"#3366CC", value: parseInt(statesData[i].Malaysian.replace(/,/g, ''))},
+              {label:"Pakistani", color:"#109618", value:parseInt(statesData[i].Pakistani.replace(/,/g, ''))},
+              {label:"Sri_Lankan", color:"#990099", value:parseInt(statesData[i].Sri_Lankan.replace(/,/g, ''))},
+              {label:"Taiwanese", color:"#3366CC", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
+              {label:"Thai", color:"#CCC", value:parseInt(statesData[i].Thai.replace(/,/g, ''))},
+              {label:"Vietnamese", color:"#FF9900", value:parseInt(statesData[i].Vietnamese.replace(/,/g, ''))},
+              {label:"Other_Asian", color:"#109618", value:parseInt(statesData[i].Other_Asian.replace(/,/g, ''))},
+              {label:"Other_Asian_not_specified", color:"#109618", value:parseInt(statesData[i].Other_Asian_not_specified.replace(/,/g, ''))}
+            ];
+          }
+        }
+        
+        return msaSubData;
+      }
+
+    });
   }
-  
-  this.Donut3D = Donut3D;
-}
 
   function getColorAsian(d) {
     return d > 250000 ? '#800026' :

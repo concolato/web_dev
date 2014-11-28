@@ -143,7 +143,7 @@ text-anchor: middle;
 }
 
 #mapdiv{
-  height: 620px;
+  height: 650px;
 }
 
 #mapControls{
@@ -162,7 +162,14 @@ text-anchor: middle;
 
 #mapControls h3:hover{background:#ccc; }
 
-#NavDisplayControle{width:40px; margin-left: 265px; color:#FF00FF; cursor: pointer;}
+#NavDisplayControle, #PieChartDisplayControle{width:40px; color:#FF00FF; cursor: pointer; clear: both;}
+#NavDisplayControle{
+  margin-left: 265px;
+} 
+#PieChartDisplayControle{
+  margin-left: 105px;
+}
+
 #navWrapper{
   width: 325px;
   float:right;
@@ -175,7 +182,7 @@ text-anchor: middle;
 }
 .legendDiv{
   float: left;
-  margin-top: 420px;
+  margin-top: 205px; /* 420 */
   position: relative;
   z-index: 999;
 }
