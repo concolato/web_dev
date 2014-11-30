@@ -185,7 +185,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
     d3.json("blackBox/js/asianSubGroupsPerMSA.json", function(statesData) {
       var MSA = "Honolulu";
 
-      var svg = d3.select("body").append("svg").attr("width",700).attr("height",300);
+      var svg = d3.select("#piecharts").append("svg").attr("width",480).attr("height",240);
       var tooltip = d3.select(".pieChartPopup");
       var datum2 = getData(MSA), datum = getNationalSubGroupData(), msaSubData = [], tooltipLabel = "";
       //console.log(datum);
@@ -194,7 +194,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
       var nationalSubGroup = svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
       var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
                           //X,  Y,   W,   H,  H Thickness, W thickness
-      Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 150, 130, 0, 0);
+      Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 135, 120, 120, 110, 0, 0);
       var wedges = nationalSubGroup.selectAll("path.topSlice")
         .on("mousemove", function(d){
           mousex = d3.mouse(this);
@@ -209,7 +209,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         });
       wedges.data(datum).enter();
 
-      Donut3D.draw("MsaSubGroupData", getData(MSA), 450, 150, 130, 100, 30, 0.4);
+      Donut3D.draw("MsaSubGroupData", getData(MSA), 370, 105, 100, 80, 30, 0.4);
       var wedges2 = MsaSubGroup
         .selectAll("path.topSlice")
         .on("mousemove", function(d){
@@ -231,17 +231,24 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         });
       wedges2.data(datum2).enter();
 
-      d3.select("#Both").on("click", function(){
+      d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
+      d3.selectAll("#piecharts").style("opacity", 0);
+
+      d3.selectAll("#Both, #Pacific").on("click", function(){
         //d3.selectAll(".pieChart").transition(1000).remove();
-        d3.selectAll(".pieChart").style("opacity", 0);
+        d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
+        d3.selectAll("#piecharts").style("opacity", 0);
       });
       d3.select("#Asian").on("click", function(){
         //changeGroupData(MSA);
-        d3.selectAll(".pieChart").style("opacity", 1);
+        d3.selectAll("#PieChartDisplayControle").style("opacity", 1);
+        d3.selectAll("#piecharts").style("opacity", 1);
       });
 
       d3.selectAll(".leaflet-clickable").on("click", function(){
         msa = d3.select(this).attr('id'); 
+        console.log(msa);
+
         changeSubGroupData(msa);
       });
       
@@ -251,15 +258,16 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         //datum2 = getData(MSA);
         wedges2.data(datum2).enter();
 
-        Donut3D.transition("MsaSubGroupData", getData(msa), 130, 100, 30, 0.4);
+        Donut3D.transition("MsaSubGroupData", getData(msa), 100, 100, 30, 0.4);
       }
       
       function changeGroupData(msa){
         svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
         svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
 
-        Donut3D.draw("MsaSubGroupData", getData(msa), 450, 150, 130, 100, 30, 0.4);
-        Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 150, 150, 150, 120, 30, 0); //will cause map error
+                                              //X,  Y,   W,   H,  H Thickness, W thickness
+        Donut3D.draw("MsaSubGroupData", getData(MSA), 350, 105, 100, 80, 30, 0.4);
+        Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 135, 120, 120, 110, 0, 0);
       }
 
       function getData(msa){
@@ -1529,6 +1537,9 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
       });
 
       var group = 'both', sets = 'populationcount';
+
+      pieChart3dCore();
+      PieChart3d();
 
       choropleth(statesData, group);
       treeMap(statesData, sets, group, group); //Yes this has an order to the chaos - general and specific groups

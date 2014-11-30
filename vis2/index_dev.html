@@ -15,6 +15,34 @@
         opacity: 0.8;
       }
 
+    path.slice{
+      stroke-width:2px;
+    }
+    polyline{
+      opacity: .3;
+      stroke: black;
+      stroke-width: 2px;
+      fill: none;
+    } 
+    svg text.percent{
+      fill:white;
+      text-anchor:middle;
+      font-size:12px;
+    }
+
+    .pieChartPopup{
+      position:absolute;
+      text-align: center;
+      margin:0px;
+      visibility:hidden;
+      top:28px;
+      border-radius:5px;
+      padding:3px;
+      opacity:.85;
+      background:#ccc;
+      color:#000;
+    }
+
     /* End Test */
     @-moz-document url-prefix() {
       .ethnicSwitch{
@@ -200,7 +228,9 @@
     
     <div class="legendDiv">
       <div id="PieChartDisplayControle">Hide/Show</div>
-      <div id="piecharts">TEST</div>
+      <div id="piecharts">
+        <div class="pieChartPopup"></div>
+      </div>
     </div>
   </div>
 
