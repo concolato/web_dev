@@ -77,9 +77,6 @@ function appendJson(){
 }
 
 function minifyJson($jsonStr){
-	//$filename = "oshaReginalAndWhdDistrictOffices.json";
-	//$jsonStr = file_get_contents($filename);
-
 	$string = trim($jsonStr);
 	return $string;
 }
@@ -117,9 +114,40 @@ function JSON_Obj_Transform(){
 		echo $jsonArrayOfObjs;
 	}
 }
+
+function JSON_Node_String_Clearup(){
+	$filename = "asianSubGroupsPerMSA.json";
+	$filenameNew = "asianSubGroupsPerMSA_New.json";
+	$patterns = array();
+	$patterns[0] = '/\s+/';
+	$patterns[1] = '/-/';
+
+	if(file_exists($filename)){
+		$jsonStr = file_get_contents($filename);
+		$jsonObj = json_decode($jsonStr);
+
+		foreach ($jsonObj as $info) {
+			$info->Metro_Area = preg_replace($patterns, '', $info->Metro_Area);
+		}
+
+		$jsonStr1 = json_encode($jsonObj);
+		//echo $jsonStr1;
+
+		//Validate the JSON
+		$cleanJsonStr = json_decode($jsonStr1);
+		if($cleanJsonStr === NULL){
+			error_log("There is an issue with your json in appendJson().\n");
+		}else{
+			file_put_contents($filenameNew, $jsonStr1);
+			print_r($jsonStr1);
+		}
+	}else{
+		error_log("File: ".$filename." does not exist in JSON_Node_String_Clearup().\n");
+	}
+}
 //echo "<pre>".JSON_Obj_Transform()."</pre>";
 
-//appendJson();
+JSON_Node_String_Clearup();
 
 class A{
 	public function message($text){
@@ -161,7 +189,7 @@ $estabNameForArray;
 //if(isset($latitude) || isset($longitude) || isset($estabNameForArray)){
 	$data = $latitude.$longitude.$estabNameForArray;
 	array_push($oshaActivityNums, $data);
-	var_dump($oshaActivityNums);
+	//var_dump($oshaActivityNums);
 //}else{
 	//echo "No all vars are set";
 //}
