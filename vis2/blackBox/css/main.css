@@ -182,7 +182,7 @@ text-anchor: middle;
 }
 .legendDiv{
   float: left;
-  margin-top: 205px; /* 420 */
+  margin-top: 470px; /* 420 */
   position: relative;
   z-index: 999;
 }

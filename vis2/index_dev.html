@@ -43,6 +43,13 @@
       color:#000;
     }
 
+    .PieChartDiv{
+      float: left;
+      top: 195px;
+      position: absolute;
+      z-index: 999;
+    }
+
     /* End Test */
     @-moz-document url-prefix() {
       .ethnicSwitch{
@@ -65,7 +72,7 @@
       }
       .legendDiv{
         float: left;
-        margin-top: 240px;
+        margin-top: 500px;
         position: relative;
         z-index: 999;
       }
@@ -168,7 +175,7 @@
                 <li><label for="hawaiian_poverty"><input type="radio" id="hawaiian_poverty" name="ethnic" value="hawaiian_poverty" >Poverty Rate (%)</label> </li>
               </ul>
             </li>      
-            <li><h3 id="African" class="navButtons"><label for="african"><input type="radio" id="african" name="ethnic" value="african"> African</label></h3>
+            <li><h3 id="Black" class="navButtons"><label for="black"><input type="radio" id="black" name="ethnic" value="african">Black</label></h3>
               <ul id="Africanmenu2" class="navSub">
                 <li><label for="hawaiian_Male"><input type="radio" id="hawaiian_Male" name="ethnic" value="hawaiian_Male" >Male</label></li>
                 <li><label for="hawaiian_Female"><input type="radio" id="hawaiian_Female" name="ethnic" value="hawaiian_Female" >Female</label></li> 
@@ -189,7 +196,7 @@
                 <li><label for="hawaiian_poverty"><input type="radio" id="hawaiian_poverty" name="ethnic" value="hawaiian_poverty" >Poverty Rate (%)</label> </li>
               </ul>
             </li>      
-            <li><h3 id="Hispanics" class="navButtons"><label for="hispanics"><input type="radio" id="hispanics" name="ethnic" value="hispanics"> Hispanics</label></h3>
+            <li><h3 id="Hispanic" class="navButtons"><label for="hispanic"><input type="radio" id="hispanic" name="ethnic" value="hispanics"> Hispanic</label></h3>
               <ul id="Hispanicsmenu2" class="navSub">
                 <li><label for="hawaiian_Male"><input type="radio" id="hawaiian_Male" name="ethnic" value="hawaiian_Male" >Male</label></li>
                 <li><label for="hawaiian_Female"><input type="radio" id="hawaiian_Female" name="ethnic" value="hawaiian_Female" >Female</label></li> 
@@ -224,13 +231,14 @@
       </div>
      
     </div>
-
     
-    <div class="legendDiv">
+    <div class="PieChartDiv">
       <div id="PieChartDisplayControle">Hide/Show</div>
       <div id="piecharts">
         <div class="pieChartPopup"></div>
       </div>
+    </div>
+    <div class="legendDiv">
     </div>
   </div>
 
@@ -258,6 +266,7 @@
         $("#Pacificmenu2").hide();
         $("#Africanmenu2").hide();
         $("#Hispanicsmenu2").hide();
+
 
         $(".navButtons").click(function(){
           $('.navSub').slideUp("slow");

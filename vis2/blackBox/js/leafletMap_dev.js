@@ -2,7 +2,7 @@ L.Control.FullScreen=L.Control.extend({options:{position:"topleft",title:"Full S
 
 d3.json("blackBox/js/oasp_dev.json", function(statesData) { 
   //Class for customizing icons on zoom
-  console.log(statesData);
+  //console.log(statesData);
   
   var LeafIcon = L.Icon.extend({
       options: {
@@ -43,7 +43,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
     var map = new L.Map('mapdiv', {
       //layers: [layer],
       center: new L.LatLng(39.16414, -97.99805),
-      zoom: 4,
+      zoom: 5,
       fullscreenControl: true,
       fullscreenControlOptions: { // optional
         title:"Fullscreen"
@@ -182,17 +182,17 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
   }
 
   function PieChart3d(){
-    d3.json("blackBox/js/asianSubGroupsPerMSA.json", function(statesData) {
+    d3.json("blackBox/js/asianSubGroupsPerMSA_New.json", function(statesData) {
+      //d3.selectAll(".pieChart").remove();
       var MSA = "Honolulu";
-
-      var svg = d3.select("#piecharts").append("svg").attr("width",480).attr("height",240);
+      var svg = d3.select("#piecharts").append("svg").attr("class","pieChartSVG").attr("width",480).attr("height",240);
+      
       var tooltip = d3.select(".pieChartPopup");
-      var datum2 = getData(MSA), datum = getNationalSubGroupData(), msaSubData = [], tooltipLabel = "";
-      //console.log(datum);
-
-      //concider making a function        
+      var datum2 = getData(MSA), datum = getNationalSubGroupData(), msaSubData = [], tooltipLabel = "", msaArray = [];
+ 
       var nationalSubGroup = svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
       var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
+      
                           //X,  Y,   W,   H,  H Thickness, W thickness
       Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 135, 120, 120, 110, 0, 0);
       var wedges = nationalSubGroup.selectAll("path.topSlice")
@@ -231,34 +231,24 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         });
       wedges2.data(datum2).enter();
 
-      d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
-      d3.selectAll("#piecharts").style("opacity", 0);
-
-      d3.selectAll("#Both, #Pacific").on("click", function(){
-        //d3.selectAll(".pieChart").transition(1000).remove();
-        d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
-        d3.selectAll("#piecharts").style("opacity", 0);
-      });
-      d3.select("#Asian").on("click", function(){
-        //changeGroupData(MSA);
-        d3.selectAll("#PieChartDisplayControle").style("opacity", 1);
-        d3.selectAll("#piecharts").style("opacity", 1);
-      });
-
-      d3.selectAll(".leaflet-clickable").on("click", function(){
-        msa = d3.select(this).attr('id'); 
-        console.log(msa);
-
-        changeSubGroupData(msa);
+      d3.selectAll(".leaflet-zoom-animated path").on("click", function(){
+        msa = d3.select(this).attr('class'); 
+        //need to clean with regex to synchronize with IDs on polygons     
+        msa = msa.replace(" leaflet-clickable","");
+        //Separate state data within (-)
+        msaArray = msa.split("-");
+      
+        changeSubGroupData(msaArray[0]);
       });
       
       function changeSubGroupData(msa){
+        console.log(msa);
         var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
         datum2 = {};
         //datum2 = getData(MSA);
         wedges2.data(datum2).enter();
 
-        Donut3D.transition("MsaSubGroupData", getData(msa), 100, 100, 30, 0.4);
+        Donut3D.transition("MsaSubGroupData", getData(msa), 100, 80, 30, 0.4);
       }
       
       function changeGroupData(msa){
@@ -1096,7 +1086,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
       function getMSA(e){
         var layer = e.target;
         var mapPolyId = '#'+layer.feature.properties.metro_area.replace(/[\W\s]/g,"")+"-"+layer.feature.properties.stusps;
-        console.log(mapPolyId);
+        //console.log(mapPolyId);
       }
 
       function onEachFeature(feature, layer) {
@@ -1538,11 +1528,11 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
 
       var group = 'both', sets = 'populationcount';
 
-      pieChart3dCore();
-      PieChart3d();
-
       choropleth(statesData, group);
       treeMap(statesData, sets, group, group); //Yes this has an order to the chaos - general and specific groups
+
+      //pieChart3dCore();
+      //PieChart3d();
 
       $(".legendDiv").append(legendMap(group));
 
@@ -1558,7 +1548,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
 
         //remove old legends when switching populations
         $(".legend").remove(); $(".info").remove(); 
-        $("#treemap").remove();
+        $("#treemap").remove(); $(".pieChartSVG").remove();
         legendHideShow();    
 
         choropleth(statesData, group);
@@ -1573,6 +1563,9 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         }
 
         treeMap(statesData, sets, treegroup, group);
+
+        pieChart3dCore();
+        PieChart3d();
         
         $(".legendDiv").append(legendMap(group)); 
         $(".jobCenterSwitch").show();
@@ -1722,7 +1715,8 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
             treemapToolTip(popCount, sets, group, d.size);
 
             //add tree to map functionality
-            d3.select("svg").selectAll(mapPolyId)
+            console.log(mapPolyId);
+            d3.selectAll(".leaflet-zoom-animated").selectAll(mapPolyId)
               .attr("stroke-width",6)
               .attr("fill-opacity","1.0")
               .attr("stroke","#000");         
@@ -1732,7 +1726,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
           var mapPolyId = '.'+d.parent.metro_area.replace(/[\W\s]/g,"")+"-"+d.parent.stusps;
           var treeMapPolyId = '#'+d.parent.metro_area.replace(/[\W\s]/g,"")+"-"+d.parent.stusps;
 
-          d3.select("svg").selectAll(mapPolyId)
+          d3.selectAll(".leaflet-zoom-animated").selectAll(mapPolyId)
             .attr("fill-opacity","0.7")
             .attr("stroke","")
             .attr("stroke-width",1);
@@ -2228,4 +2222,18 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
 
   buildMapData(statesData);
   getPoints(statesData);
+
+  d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
+  d3.selectAll("#piecharts").style("opacity", 0);
+
+  d3.selectAll("#Both, #Pacific, #Hispanic, #Black").on("click", function(){
+    //d3.selectAll(".pieChart").transition(1000).remove();
+    d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
+    d3.selectAll("#piecharts").style("opacity", 0);
+  });
+  d3.select("#Asian").on("click", function(){
+    d3.selectAll("#PieChartDisplayControle").style("opacity", 1);
+    d3.selectAll("#piecharts").style("opacity", 1);
+  });
+
 });       
