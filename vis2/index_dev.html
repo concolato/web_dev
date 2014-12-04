@@ -8,11 +8,10 @@
 		/* Test New CSS */
     #piecharts{
         width: 480px;
-        height: 240px;
+        height: 255px;
         background-color: #F6F6F6;
         margin: 0px 0px 10px 10px;
         z-index:999;
-        opacity: 0.8;
       }
 
     path.slice{
@@ -48,6 +47,21 @@
       top: 195px;
       position: absolute;
       z-index: 999;
+      opacity: 0.8;
+    }
+    #pieNational, #pieMSA{
+      position: absolute;
+      color: #000;
+      font-size: 1.1em;
+      font-weight:bold;
+    }
+    #pieNational{
+      width: 80px;
+      left: 115px;;
+    }
+    #pieMSA{
+      width: 150px;      
+      left: 290px;    
     }
 
     /* End Test */
@@ -72,7 +86,7 @@
       }
       .legendDiv{
         float: left;
-        margin-top: 500px;
+        margin-top: 505px;
         position: relative;
         z-index: 999;
       }
@@ -235,6 +249,9 @@
     <div class="PieChartDiv">
       <div id="PieChartDisplayControle">Hide/Show</div>
       <div id="piecharts">
+        <div id="pieNational">Nation WIde</div>
+        <div id="pieMSA">MSA</div>
+
         <div class="pieChartPopup"></div>
       </div>
     </div>

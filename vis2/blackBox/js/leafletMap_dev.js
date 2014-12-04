@@ -185,7 +185,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
     d3.json("blackBox/js/asianSubGroupsPerMSA_New.json", function(statesData) {
       //d3.selectAll(".pieChart").remove();
       var MSA = "Honolulu";
-      var svg = d3.select("#piecharts").append("svg").attr("class","pieChartSVG").attr("width",480).attr("height",240);
+      var svg = d3.select("#piecharts").append("svg").attr("class","pieChartSVG").attr("width",480).attr("height",250);
       
       var tooltip = d3.select(".pieChartPopup");
       var datum2 = getData(MSA), datum = getNationalSubGroupData(), msaSubData = [], tooltipLabel = "", msaArray = [];
@@ -194,7 +194,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
       var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
       
                           //X,  Y,   W,   H,  H Thickness, W thickness
-      Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 135, 120, 120, 110, 0, 0);
+      Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 135, 135, 120, 110, 0, 0);
       var wedges = nationalSubGroup.selectAll("path.topSlice")
         .on("mousemove", function(d){
           mousex = d3.mouse(this);
@@ -202,14 +202,14 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
 
               d3.select(this).classed("hover", true);
 
-            tooltip.html(d.label+": " + d.value).style("visibility", "visible").style("left", mousex + "px" );
+            tooltip.html(dataConverter(d.label)+": " + numberWithCommas(d.value)).style("visibility", "visible").style("left", mousex + "px" );
         })
         .on("mouseout", function(){
           tooltip.style("visibility", "hidden");
         });
       wedges.data(datum).enter();
 
-      Donut3D.draw("MsaSubGroupData", getData(MSA), 370, 105, 100, 80, 30, 0.4);
+      Donut3D.draw("MsaSubGroupData", getData(MSA), 370, 120, 100, 80, 30, 0.4);
       var wedges2 = MsaSubGroup
         .selectAll("path.topSlice")
         .on("mousemove", function(d){
@@ -223,8 +223,8 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
               }else{
                 tooltipLabel = d.label;
               }
-
-            tooltip.html(tooltipLabel+": " + d.value).style("visibility", "visible").style("left", mousex + "px" );
+             
+            tooltip.html(dataConverter(tooltipLabel)+": " + numberWithCommas(d.value)).style("visibility", "visible").style("left", mousex + "px" );
         })
         .on("mouseout", function(){
           tooltip.style("visibility", "hidden");
@@ -233,13 +233,20 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
 
       d3.selectAll(".leaflet-zoom-animated path").on("click", function(){
         msa = d3.select(this).attr('class'); 
+        
         //need to clean with regex to synchronize with IDs on polygons     
         msa = msa.replace(" leaflet-clickable","");
         //Separate state data within (-)
         msaArray = msa.split("-");
-      
+
+        //Place MSA name
+        d3.select("#pieMSA").html(msaArray[0].replace(/([a-z])([A-Z])/g, '$1-$2'));     
         changeSubGroupData(msaArray[0]);
       });
+
+      function dataConverter(groupName){
+        return groupName.replace(/\_/g," ");
+      }
       
       function changeSubGroupData(msa){
         console.log(msa);
@@ -251,6 +258,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         Donut3D.transition("MsaSubGroupData", getData(msa), 100, 80, 30, 0.4);
       }
       
+      //Is this in use??
       function changeGroupData(msa){
         svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
         svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
@@ -264,27 +272,26 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         var needle = msa //.replace(/[\W\s]/g,"");
         var i=0, msaSubTotals;
         
-        for(i; i < statesData.length; i++){
-          //console.log(statesData[i]);       
+        for(i; i < statesData.length; i++){      
           if(statesData[i].Metro_Area == needle){
             msaSubData=[
-              {label:"Asian_Indian", color:"#3366CC", value:parseInt(statesData[i].Asian_Indian.replace(/,/g, ''))},
+              {label:"Asian_Indian", color:"#FF6600", value:parseInt(statesData[i].Asian_Indian.replace(/,/g, ''))},
               {label:"Bangladeshi", color:"#DC3912", value:parseInt(statesData[i].Bangladeshi.replace(/,/g, ''))},
-              {label:"Cambodian", color:"#109618", value:parseInt(statesData[i].Cambodian.replace(/,/g, ''))},
-              {label:"Chinese", color:"#990099", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
-              {label:"Filipino", color:"#3366CC", value:parseInt(statesData[i].Filipino.replace(/,/g, ''))},
+              {label:"Cambodian", color:"#6600CC", value:parseInt(statesData[i].Cambodian.replace(/,/g, ''))},
+              {label:"Chinese", color:"#FF0000", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
+              {label:"Filipino", color:"#E6B800", value:parseInt(statesData[i].Filipino.replace(/,/g, ''))},
               {label:"Hmong", color:"#DC3912", value:parseInt(statesData[i].Hmong.replace(/,/g, ''))},
-              {label:"Indonesian", color:"#CCC", value:parseInt(statesData[i].Indonesian.replace(/,/g, ''))},
+              {label:"Indonesian", color:"#8F2400", value:parseInt(statesData[i].Indonesian.replace(/,/g, ''))},
               {label:"Japanese", color:"#FF9900", value:parseInt(statesData[i].Japanese.replace(/,/g, ''))},
-              {label:"Korean", color:"#109618", value:parseInt(statesData[i].Korean.replace(/,/g, ''))},
+              {label:"Korean", color:"#990000", value:parseInt(statesData[i].Korean.replace(/,/g, ''))},
               {label:"Laotian", color:"#990099", value:parseInt(statesData[i].Laotian.replace(/,/g, ''))},
-              {label:"Malaysian", color:"#3366CC", value: parseInt(statesData[i].Malaysian.replace(/,/g, ''))},
-              {label:"Pakistani", color:"#109618", value:parseInt(statesData[i].Pakistani.replace(/,/g, ''))},
-              {label:"Sri_Lankan", color:"#990099", value:parseInt(statesData[i].Sri_Lankan.replace(/,/g, ''))},
-              {label:"Taiwanese", color:"#3366CC", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
-              {label:"Thai", color:"#CCC", value:parseInt(statesData[i].Thai.replace(/,/g, ''))},
-              {label:"Vietnamese", color:"#FF9900", value:parseInt(statesData[i].Vietnamese.replace(/,/g, ''))},
-              {label:"Other_Asian", color:"#109618", value:parseInt(statesData[i].Other_Asian.replace(/,/g, ''))},
+              {label:"Malaysian", color:"#99FF33", value: parseInt(statesData[i].Malaysian.replace(/,/g, ''))},
+              {label:"Pakistani", color:"#CC3399", value:parseInt(statesData[i].Pakistani.replace(/,/g, ''))},
+              {label:"Sri_Lankan", color:"#660066", value:parseInt(statesData[i].Sri_Lankan.replace(/,/g, ''))},
+              {label:"Taiwanese", color:"#3366CC", value:parseInt(statesData[i].Taiwanese.replace(/,/g, ''))},
+              {label:"Thai", color:"#3333CC", value:parseInt(statesData[i].Thai.replace(/,/g, ''))},
+              {label:"Vietnamese", color:"#339966", value:parseInt(statesData[i].Vietnamese.replace(/,/g, ''))},
+              {label:"Other_Asian", color:"#00CC99", value:parseInt(statesData[i].Other_Asian.replace(/,/g, ''))},
               {label:"Other_Asian_not_specified", color:"#109618", value:parseInt(statesData[i].Other_Asian_not_specified.replace(/,/g, ''))}
             ];
           }
@@ -297,28 +304,27 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         var needle = "Abilene".replace(/[\W\s]/g,"");
         var i=0, msaSubData = [], msaSubTotals;
       
-        for(i; i < statesData.length; i++){
-          //console.log(statesData[i]);       
+        for(i; i < statesData.length; i++){       
           if(statesData[i].Metro_Area == needle){
             msaSubData=[
-              {label:"Asian_Indian", color:"#3366CC", value:parseInt(statesData[i].Asian_Indian.replace(/,/g, ''))},
-              {label:"Bangladeshi", color:"#DC3912", value:parseInt(statesData[i].Bangladeshi.replace(/,/g, ''))},
-              {label:"Cambodian", color:"#109618", value:parseInt(statesData[i].Cambodian.replace(/,/g, ''))},
-              {label:"Chinese", color:"#990099", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
-              {label:"Filipino", color:"#3366CC", value:parseInt(statesData[i].Filipino.replace(/,/g, ''))},
-              {label:"Hmong", color:"#DC3912", value:parseInt(statesData[i].Hmong.replace(/,/g, ''))},
-              {label:"Indonesian", color:"#CCC", value:parseInt(statesData[i].Indonesian.replace(/,/g, ''))},
-              {label:"Japanese", color:"#FF9900", value:parseInt(statesData[i].Japanese.replace(/,/g, ''))},
-              {label:"Korean", color:"#109618", value:parseInt(statesData[i].Korean.replace(/,/g, ''))},
-              {label:"Laotian", color:"#990099", value:parseInt(statesData[i].Laotian.replace(/,/g, ''))},
-              {label:"Malaysian", color:"#3366CC", value: parseInt(statesData[i].Malaysian.replace(/,/g, ''))},
-              {label:"Pakistani", color:"#109618", value:parseInt(statesData[i].Pakistani.replace(/,/g, ''))},
-              {label:"Sri_Lankan", color:"#990099", value:parseInt(statesData[i].Sri_Lankan.replace(/,/g, ''))},
-              {label:"Taiwanese", color:"#3366CC", value:parseInt(statesData[i].Chinese_except_Taiwanese.replace(/,/g, ''))},
-              {label:"Thai", color:"#CCC", value:parseInt(statesData[i].Thai.replace(/,/g, ''))},
-              {label:"Vietnamese", color:"#FF9900", value:parseInt(statesData[i].Vietnamese.replace(/,/g, ''))},
-              {label:"Other_Asian", color:"#109618", value:parseInt(statesData[i].Other_Asian.replace(/,/g, ''))},
-              {label:"Other_Asian_not_specified", color:"#109618", value:parseInt(statesData[i].Other_Asian_not_specified.replace(/,/g, ''))}
+              {label:"Asian_Indian", color:"#FF6600", value:81096},
+              {label:"Bangladeshi", color:"#DC3912", value:21926},
+              {label:"Cambodian", color:"#6600CC", value:36859},
+              {label:"Chinese", color:"#FF0000", value:77089},
+              {label:"Filipino", color:"#E6B800", value:85118},
+              {label:"Hmong", color:"#DC3912", value:18048},
+              {label:"Indonesian", color:"#8F2400", value:21993},
+              {label:"Japanese", color:"#FF9900", value:67400},
+              {label:"Korean", color:"#990000", value:74922},
+              {label:"Laotian", color:"#990099", value:38247},
+              {label:"Malaysian", color:"#99FF33", value: 11724},
+              {label:"Pakistani", color:"#CC3399", value:47862},
+              {label:"Sri_Lankan", color:"#660066", value:18350},
+              {label:"Taiwanese", color:"#3366CC", value:29536},
+              {label:"Thai", color:"#3333CC", value:50295},
+              {label:"Vietnamese", color:"#339966", value:70493},
+              {label:"Other_Asian", color:"#00CC99", value:53584},
+              {label:"Other_Asian_not_specified", color:"#109618", value:42517}
             ];
           }
         }
