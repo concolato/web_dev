@@ -233,11 +233,20 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
 
       d3.selectAll(".leaflet-zoom-animated path").on("click", function(){
         msa = d3.select(this).attr('class'); 
+
+            /*.attr("fill-opacity","0.7")
+            .attr("stroke","")
+            .attr("stroke-width",1);*/
         
         //need to clean with regex to synchronize with IDs on polygons     
         msa = msa.replace(" leaflet-clickable","");
+        /*console.log(msa);
+         d3.selectAll(msa)
+            .attr("stroke-width",6)
+              .attr("fill-opacity","1.0")
+              .attr("stroke","#000"); */
         //Separate state data within (-)
-        msaArray = msa.split("-");
+        msaArray = msa.split("-"); 
 
         //Place MSA name
         d3.select("#pieMSA").html(msaArray[0].replace(/([a-z])([A-Z])/g, '$1-$2'));     
@@ -249,7 +258,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
       }
       
       function changeSubGroupData(msa){
-        console.log(msa);
+        //console.log(msa);
         var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
         datum2 = {};
         //datum2 = getData(MSA);
@@ -1092,14 +1101,13 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
       function getMSA(e){
         var layer = e.target;
         var mapPolyId = '#'+layer.feature.properties.metro_area.replace(/[\W\s]/g,"")+"-"+layer.feature.properties.stusps;
-        //console.log(mapPolyId);
+        console.log(mapPolyId);
       }
 
       function onEachFeature(feature, layer) {
         layer.on({
             mouseover: highlightFeature,
             mouseout: resetHighlight, 
-            click: getMSA, 
         });     
       }
       //End Choropleth code
@@ -2229,17 +2237,14 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
   buildMapData(statesData);
   getPoints(statesData);
 
-  d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
-  d3.selectAll("#piecharts").style("opacity", 0);
+  //Controls for displaying pie charts
+  d3.selectAll("#PieChartDisplayControle, #pieNational, #pieMSA, #piecharts").style("opacity", 0);
 
   d3.selectAll("#Both, #Pacific, #Hispanic, #Black").on("click", function(){
-    //d3.selectAll(".pieChart").transition(1000).remove();
-    d3.selectAll("#PieChartDisplayControle").style("opacity", 0);
-    d3.selectAll("#piecharts").style("opacity", 0);
+    d3.selectAll("#PieChartDisplayControle, #pieNational, #pieMSA, #piecharts").style("opacity", 0);
   });
   d3.select("#Asian").on("click", function(){
-    d3.selectAll("#PieChartDisplayControle").style("opacity", 1);
-    d3.selectAll("#piecharts").style("opacity", 1);
+    d3.selectAll("#PieChartDisplayControle, #pieNational, #pieMSA, #piecharts").style("opacity", 1);
   });
 
 });       
