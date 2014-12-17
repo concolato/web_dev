@@ -1,9 +1,5 @@
 L.Control.FullScreen=L.Control.extend({options:{position:"topleft",title:"Full Screen",forceSeparateButton:false},onAdd:function(e){var t="leaflet-control-zoom-fullscreen",n;if(e.zoomControl&&!this.options.forceSeparateButton){n=e.zoomControl._container}else{n=L.DomUtil.create("div","leaflet-bar")}this._createButton(this.options.title,t,n,this.toogleFullScreen,e);return n},_createButton:function(e,t,n,r,i){var s=L.DomUtil.create("a",t,n);s.href="#";s.title=e;L.DomEvent.addListener(s,"click",L.DomEvent.stopPropagation).addListener(s,"click",L.DomEvent.preventDefault).addListener(s,"click",r,i);L.DomEvent.addListener(n,fullScreenApi.fullScreenEventName,L.DomEvent.stopPropagation).addListener(n,fullScreenApi.fullScreenEventName,L.DomEvent.preventDefault).addListener(n,fullScreenApi.fullScreenEventName,this._handleEscKey,i);L.DomEvent.addListener(document,fullScreenApi.fullScreenEventName,L.DomEvent.stopPropagation).addListener(document,fullScreenApi.fullScreenEventName,L.DomEvent.preventDefault).addListener(document,fullScreenApi.fullScreenEventName,this._handleEscKey,i);return s},toogleFullScreen:function(){this._exitFired=false;var e=this._container;if(this._isFullscreen){if(fullScreenApi.supportsFullScreen){fullScreenApi.cancelFullScreen(e)}else{L.DomUtil.removeClass(e,"leaflet-pseudo-fullscreen")}this.invalidateSize();this.fire("exitFullscreen");this._exitFired=true;this._isFullscreen=false}else{if(fullScreenApi.supportsFullScreen){fullScreenApi.requestFullScreen(e)}else{L.DomUtil.addClass(e,"leaflet-pseudo-fullscreen")}this.invalidateSize();this.fire("enterFullscreen");this._isFullscreen=true}},_handleEscKey:function(){if(!fullScreenApi.isFullScreen(this)&&!this._exitFired){this.fire("exitFullscreen");this._exitFired=true;this._isFullscreen=false}}});L.Map.addInitHook(function(){if(this.options.fullscreenControl){this.fullscreenControl=L.control.fullscreen(this.options.fullscreenControlOptions);this.addControl(this.fullscreenControl)}});L.control.fullscreen=function(e){return new L.Control.FullScreen(e)};(function(){var e={supportsFullScreen:false,isFullScreen:function(){return false},requestFullScreen:function(){},cancelFullScreen:function(){},fullScreenEventName:"",prefix:""},t="webkit moz o ms khtml".split(" ");if(typeof document.exitFullscreen!="undefined"){e.supportsFullScreen=true}else{for(var n=0,r=t.length;n<r;n++){e.prefix=t[n];if(typeof document[e.prefix+"CancelFullScreen"]!="undefined"){e.supportsFullScreen=true;break}}}if(e.supportsFullScreen){e.fullScreenEventName=e.prefix+"fullscreenchange";e.isFullScreen=function(){switch(this.prefix){case"":return document.fullScreen;case"webkit":return document.webkitIsFullScreen;default:return document[this.prefix+"FullScreen"]}};e.requestFullScreen=function(e){return this.prefix===""?e.requestFullscreen():e[this.prefix+"RequestFullScreen"](Element.ALLOW_KEYBOARD_INPUT)};e.cancelFullScreen=function(e){return this.prefix===""?document.exitFullscreen():document[this.prefix+"CancelFullScreen"]()}}if(typeof jQuery!="undefined"){jQuery.fn.requestFullScreen=function(){return this.each(function(){var t=jQuery(this);if(e.supportsFullScreen){e.requestFullScreen(t)}})}}window.fullScreenApi=e})()
 
-d3.json("blackBox/js/oasp_dev.json", function(statesData) { 
-  //Class for customizing icons on zoom
-  //console.log(statesData);
-  
   var LeafIcon = L.Icon.extend({
       options: {
           iconSize:     [15, 23],
@@ -15,7 +11,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
       return new L.Icon(options);
   };
 
-  function detectBoundaries(tipBounds, elem){
+function detectBoundaries(tipBounds, elem){
     tipBounds.left = (tipBounds.left + $(elem).width()) > window.innerWidth ? tipBounds.left - $(elem).width() - 30 : tipBounds.left;
     tipBounds.left = (tipBounds.left - $(elem).width()) < 0 ? $(elem).width() : tipBounds.left;
 
@@ -33,11 +29,11 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
     }     
   }
 
-  function legendHideShow(){
+  function legendHideShow(map){
     if(map.getZoom() > 6){ $(".legendDiv").hide(); }else{ $(".legendDiv").show();}
   }
 
-  //initialize map
+//initialize map
   function initMap(statesData){
     // Added for stamen tiles
     var map = new L.Map('mapdiv', {
@@ -182,7 +178,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
   }
 
   function PieChart3d(){
-    d3.json("blackBox/js/asianSubGroupsPerMSA_New.json", function(statesData) {
+    d3.json("blackBox/js/data/asianSubGroupsPerMSA_New.json", function(statesData) {
       //d3.selectAll(".pieChart").remove();
       var MSA = "Honolulu";
       var svg = d3.select("#piecharts").append("svg").attr("class","pieChartSVG").attr("width",480).attr("height",250);
@@ -484,6 +480,12 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
      isNaN(d) == true  ? '#1A1A1A':
      '#1A1A1A';
   }
+
+//threads/Both oasp_dev
+d3.json("blackBox/js/data/oasp_dev.json", function(statesData) { 
+  //Class for customizing icons on zoom
+  console.log(statesData);
+
   //Class for placing data on the map and tree map
   function buildMapData(statesData){
     
@@ -1563,7 +1565,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         //remove old legends when switching populations
         $(".legend").remove(); $(".info").remove(); 
         $("#treemap").remove(); $(".pieChartSVG").remove();
-        legendHideShow();    
+        legendHideShow(map);    
 
         choropleth(statesData, group);
         zoomMech(); 
@@ -2032,8 +2034,9 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
   }
 
   function getPoints(statesData){
+    //
     $.ajax({
-      url: "blackBox/js/oshaReginalAndWhdDistrictOffices.json",
+      url: "blackBox/js/data/oshaReginalAndWhdDistrictOffices.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){
@@ -2042,7 +2045,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
     });
 
     $.ajax({
-      url: "blackBox/js/oshaReginalAndWhdDistrictOffices2.json",
+      url: "blackBox/js/data/oshaReginalAndWhdDistrictOffices2.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){
@@ -2213,7 +2216,7 @@ d3.json("blackBox/js/oasp_dev.json", function(statesData) {
         map.addLayer(geojson); 
       }  
 
-      legendHideShow();
+      legendHideShow(map);
   }
   
   function onMapClick(e) {//Coordinate pop up
