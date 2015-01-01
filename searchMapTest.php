@@ -1,11 +1,19 @@
 <!DOCTYPE html>
+<?php
+
+$originalDate = "5 Sept 2013";
+$newDate = date("Y-m-d", strtotime($originalDate));
+//echo $newDate;
+?>
+
 <html>
 <head>
 <title>Dynamic Searchable Map Example 1</title>
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<link  rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css"/>
 
 <style>
-	#map { height: 480px; }
+	#map { height: 900pt; width: 100%; margin:0 auto; overflow:hidden;clear: both;}
   #searchBox{
     width: 270px; 
     float: left; position: relative; 
@@ -25,21 +33,65 @@
 .mapdatainput{
 
 }
+.leaflet-control-geocoder a {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.leaflet-control-geocoder {
+  box-shadow: 0 1px 7px #999;
+  background: #f8f8f9;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+}
+
+.leaflet-control-geocoder a {
+  background-image: url(js/img/geocoder.png);
+  width: 36px;
+  height: 36px;
+}
+
+.leaflet-touch .leaflet-control-geocoder a {
+  width: 44px;
+  height: 44px;
+}
+
+.leaflet-control-geocoder .leaflet-control-geocoder-form,
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-toggle {
+  display: none;
+}
+
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
+  display: block;
+  position: relative;
+}
+
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
+  padding: 5px;
+}
 </style>
 </head>
 <body>
 
 <div id="map">
-  <div id="searchBox"> 
+  <!--<div id="searchBox"> 
     <lable for="geodatainput">  
       <input type="search" id="geodatainput" class="mapdatainput" name="mapsearch"> 
       <a class="search-button" href="#" title="search" id="mapsearch"></a>  
     </lable>
   </div>
-</div>
+</div> -->
+        
 
 <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="js/Control.OSMGeocoder.js"></script>
+
+<script
+    src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js">
+</script>
 <script>
 //give State name and get back center lat long
 function stateCenterPoint(stateName){
@@ -275,11 +327,16 @@ function stateCenterPoint(stateName){
   return latLong;
 }
 
+
 var stateLatLong = stateCenterPoint("AZ");
+var popup = L.popup();
 
 
 // create a map in the "map" div, set the view to a given place and zoom
 var map = L.map('map').setView([stateLatLong[0], stateLatLong[1]], 6);
+var osmGeocoder = new L.Control.OSMGeocoder();
+
+map.addControl(osmGeocoder);
 
 $("#mapsearch").click(function(){
   var data;
@@ -288,15 +345,131 @@ $("#mapsearch").click(function(){
   console.log(data);
   
   stateLatLong = stateCenterPoint(data);
-  console.log(stateLatLong);
+  
   map.setView([stateLatLong[0], stateLatLong[1]], 6);
   
 });
+
+
+var lat = getQueryVariable("lat");
+
+if(lat){
+  console.log(lat);
+  //map.panTo(lat);
+}
+
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("?");
+
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  } 
+  alert('Query Variable ' + variable + ' not found');
+}
+
+function onMapClick(e) {//Coordinate pop up
+  popup.setLatLng(e.latlng)
+       .setContent("Coordinates clicked are: " + e.latlng.toString())
+       .openOn(map);
+
+  var centerPoint = map.getSize().divideBy(2),
+    targetPoint = centerPoint.subtract([1500, 0]),
+    targetLatLng = map.containerPointToLatLng(centerPoint),
+    loadLat = "?lat="+targetLatLng.lat;
+
+  //console.log(targetLatLng.lat+" "+targetLatLng.lng);
+  
+  setTimeout(function(){
+     window.location.href = window.location.href + loadLat;
+     window.location.href.reload(1);
+  }, 5000); 
+}
+
+    map.on('click', onMapClick);
 
 // add an OpenStreetMap tile layer
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+
+//Leaflet Draw code
+  var LeafIcon = L.Icon.extend({
+    options: {
+      shadowUrl: 
+          'http://leafletjs.com/docs/images/leaf-shadow.png',
+      iconSize:     [38, 95],
+      shadowSize:   [50, 64],
+      iconAnchor:   [22, 94],
+      shadowAnchor: [4, 62],
+      popupAnchor:  [-3, -76]
+    }
+  });
+
+  var greenIcon = new LeafIcon({
+    iconUrl: 'http://leafletjs.com/docs/images/leaf-green.png'
+    });
+
+  var drawnItems = new L.FeatureGroup();
+  map.addLayer(drawnItems);
+
+  var drawControl = new L.Control.Draw({
+    position: 'topright',
+    draw: {
+      polygon: {
+        shapeOptions: {
+          color: 'purple'
+        },
+        allowIntersection: false,
+        drawError: {
+          color: 'orange',
+          timeout: 1000
+        },
+        showArea: true,
+        metric: false,
+        repeatMode: true
+      },
+      polyline: {
+        shapeOptions: {
+          color: 'red'
+        },
+      },
+      rect: {
+        shapeOptions: {
+          color: 'green'
+        },
+      },
+      circle: {
+        shapeOptions: {
+          color: 'steelblue'
+        },
+      },
+      marker: {
+        icon: greenIcon
+      },
+    },
+    edit: {
+      featureGroup: drawnItems
+    }
+  });
+  map.addControl(drawControl);
+
+  map.on('draw:created', function (e) {
+    var type = e.layerType,
+      layer = e.layer;
+
+      console.log(layer);
+
+    if (type === 'marker') {
+      layer.bindPopup('A popup!');
+    }
+
+    drawnItems.addLayer(layer);
+  });
+  //end leaflet Draw
 	</script>
 </body>
 </html>
