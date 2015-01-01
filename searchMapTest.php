@@ -351,11 +351,12 @@ $("#mapsearch").click(function(){
 });
 
 
-var lat = getQueryVariable("lat");
+var positionData = getQueryVariable("positionData");
 
-if(lat){
-  console.log(lat);
-  //map.panTo(lat);
+if(positionData){
+  console.log(positionData);
+  componants = positionData.split(",")
+  map.setView([componants[0], componants[1]], componants[2]);
 }
 
 function getQueryVariable(variable) {
@@ -379,12 +380,12 @@ function onMapClick(e) {//Coordinate pop up
   var centerPoint = map.getSize().divideBy(2),
     targetPoint = centerPoint.subtract([1500, 0]),
     targetLatLng = map.containerPointToLatLng(centerPoint),
-    loadLat = "?lat="+targetLatLng.lat;
+    positionData = "?positionData="+targetLatLng.lat+","+targetLatLng.lng+","+map.getZoom();
 
-  //console.log(targetLatLng.lat+" "+targetLatLng.lng);
+  console.log(positionData);
   
   setTimeout(function(){
-     window.location.href = window.location.href + loadLat;
+     window.location.href = [location.protocol, '//', location.host, location.pathname,  positionData].join("");
      window.location.href.reload(1);
   }, 5000); 
 }
