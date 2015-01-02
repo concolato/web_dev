@@ -11,9 +11,15 @@ $newDate = date("Y-m-d", strtotime($originalDate));
 <title>Dynamic Searchable Map Example 1</title>
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <link  rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css"/>
+<link href="js/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
-	#map { height: 900pt; width: 100%; margin:0 auto; overflow:hidden;clear: both;}
+html, body, #map {
+      height:100%;
+      width:100%;
+      padding:0px;
+      margin:0px;
+   } 
   #searchBox{
     width: 270px; 
     float: left; position: relative; 
@@ -74,18 +80,24 @@ $newDate = date("Y-m-d", strtotime($originalDate));
 </style>
 </head>
 <body>
+  <div id="map">
 
-<div id="map">
-  <!--<div id="searchBox"> 
-    <lable for="geodatainput">  
-      <input type="search" id="geodatainput" class="mapdatainput" name="mapsearch"> 
-      <a class="search-button" href="#" title="search" id="mapsearch"></a>  
-    </lable>
   </div>
-</div> -->
-        
+<!--<div class="container" >
+   <div class="row">
+      <div  id="map">
+        <div id="searchBox"> 
+          <lable for="geodatainput">  
+            <input type="search" id="geodatainput" class="mapdatainput" name="mapsearch"> 
+            <a class="search-button" href="#" title="search" id="mapsearch"></a>  
+          </lable>
+        </div>
+      </div> 
+  </div>  
+</div>  -->    
 
 <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="js/dist/js/bootstrap.min.js"></script>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 <script src="js/Control.OSMGeocoder.js"></script>
 
@@ -350,7 +362,6 @@ $("#mapsearch").click(function(){
   
 });
 
-
 var positionData = getQueryVariable("positionData");
 
 if(positionData){
@@ -369,7 +380,7 @@ function getQueryVariable(variable) {
       return pair[1];
     }
   } 
-  alert('Query Variable ' + variable + ' not found');
+  console.log('Query Variable ' + variable + ' not found');
 }
 
 function onMapClick(e) {//Coordinate pop up
