@@ -231,9 +231,9 @@ function PieChart3d(){
         tooltip.style("visibility", "hidden");
       });
     wedges2.data(datum2).enter();
-
+    console.log("TEST1");
     d3.selectAll(".leaflet-zoom-animated path").on("click", function(){
-      //console.log("TEST");
+      console.log("TEST2");
       msa = d3.select(this).attr('class'); 
 
           /*.attr("fill-opacity","0.7")
@@ -308,7 +308,7 @@ function PieChart3d(){
           ];
         }
       }
-      console.log(msaSubData);
+      //console.log(msaSubData);
       return msaSubData;
     }
 
@@ -1582,9 +1582,8 @@ function buildMain(dataFile, group){
       }
 
       treeMap(statesData, sets, treegroup, group);
-
       pieChart3dCore();
-    PieChart3d();
+      PieChart3d();
 
       //Treemap Switch       
       $("#jobCenterButtons input:checkbox[name=jobC]").on( "click", function( event ) {
@@ -2026,202 +2025,27 @@ function buildMain(dataFile, group){
               .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
         }
       }//end treeMap
-
     }
 
-    //oshaReginalAndWhdDistrictOffices  threads/Comp
-    function getPoints(statesData){
-     
-      $.ajax({
-        url: "blackBox/js/data/threads/Comp.json",
-        dataType:'json',
-        type: 'GET',
-      }).done(function(data){
-          //Create map points and Geometry for layer > 2
-          pointsDataProcess(data);
-      });
 
-      /*$.ajax({
-        url: "blackBox/js/data/oshaReginalAndWhdDistrictOffices2.json",
-        dataType:'json',
-        type: 'GET',
-      }).done(function(data){
-          //Create map points and Geometry for layer > 2, second "thread"
-          pointsDataProcess(data);
-      });*/
-
-      var legendPoints = L.control({position: 'bottomleft'});
-      legendPoints.onAdd = function(map){
-        var div = L.DomUtil.create('div', 'info2 legend2');
-          div.innerHTML +='<i style="background:#CCFF33"></i>OSHA Area Office<br>';
-          div.innerHTML +='<i style="background:#00CC66"></i>OFCCP Regional/Area/District Office<br>';         
-          div.innerHTML +='<i style="background:#66CCFF"></i>Comprehensive Job Center<br>';        
-          div.innerHTML +='<i style="background:#0099FF"></i>Affiliate Job Center<br>'; 
-          div.innerHTML +='<i style="background:#A352CC"></i>EBSA Regional/District Office<br>';
-          div.innerHTML +='<i style="background:#FF00FF"></i>WHD District Office<br>'; //#FF0066
-          div.innerHTML +='<i style="background:#3B0737"></i>Job Corps Center<br>';           
-                      
-        return div;
-      }  
-      legendPoints.addTo(map); $(".info2").hide();
-      //Zoom based Data Traversal method
-      map.on('zoomend', function(e){
-        zoomMech();
-      });
-      //Zoom based Data Traversal method
-      map.on('zoomend', function(e){
-        zoomMech();
-      });
-    }//End getPoints()
-
-    function pointsDataProcess(data){
-      function populate(pointsBucket){
-            var generic, marker, oshaoffice, whdoffice, jobCentersComp, jobCentersCorps, jobCentersAffiliate;
-
-            for(w=0; w < pointsBucket.length; w++){
-                var firstWord = pointsBucket[w].TYPE.split(" ");
-
-                if(pointsBucket[w].TYPE.indexOf("OFCCP") >= 0){
-                  pointsBucket[w].TYPE = "OFCCP Office";
-                }
-
-                if(pointsBucket[w].TYPE.indexOf("EBSA") >= 0){
-                  pointsBucket[w].TYPE = "EBSA Office";
-                }
-
-                switch(pointsBucket[w].TYPE){               
-                  case "OSHA Area Office":
-                    oshaoffice = new LeafIcon({iconUrl: 'blackBox/js/images/oshaOffice.png'});
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: oshaoffice}
-                    );
-                    
-                  break;
-                  case "WHD District Office":
-                    whdoffice = new LeafIcon({iconUrl: 'blackBox/js/images/whdOffice.png'});
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: whdoffice}
-                    );
-                    
-                  break;
-                  case "Comprehensive Job Center":
-                    jobCentersComp = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersComp.png'});
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: jobCentersComp}
-                    );
-                    
-                  break;
-                  case "Job Corps Center":
-                    jobCentersCorps = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersCorps.png'});
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: jobCentersCorps}
-                    );
-                    
-                  break;
-                  case "Affiliate Job Center":
-                    jobCentersAffiliate = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersAffiliate.png'});
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: jobCentersAffiliate}
-                    );
-                    
-                  break;
-                  case "OFCCP Office":
-                    jobCentersOFCCP = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersOFCCP.png'});
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: jobCentersOFCCP}
-                    );
-                    
-                  break;                             
-                  case "EBSA Office":
-                    jobCentersEBSA = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersEBSA.png'});
-                    
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: jobCentersEBSA}
-                    );
-                    
-                  break;
-                  default:
-                    generic = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersOther.png'});
-                 
-                    marker = L.marker(
-                      new L.LatLng(pointsBucket[w].LATITUDE, 
-                          pointsBucket[w].LONGITUDE), 
-                      {icon: generic}
-                    );
-                    
-                }
-
-                marker.bindPopup(
-                  "<strong>Type: "+pointsBucket[w].TYPE+"</strong><br />"
-                  +pointsBucket[w].NAME+"<br />"
-                  +pointsBucket[w].Street_Address+"<br />"
-                  +pointsBucket[w].City+", "
-                  +pointsBucket[w].State+", "
-                  +pointsBucket[w].Zip+"<br />"
-                );                   
-              markers.addLayer(marker);
-            }
-            return false;
-          }
-          
-          //Begin Layer 2 and 3 Intigration
-          var pointsBucket = data,           
-              jsonPoint = L.geoJson(pointsBucket, {
-              filter: function(feature, layer) {
-                  return feature.properties.show_on_map;
-              },
-          });
-              
-          populate(pointsBucket);    
-          //END Layer 2 Construction
-    }
-    
-    function zoomMech(){
-        if(map.getZoom() >= 6){                 
-            map.addLayer(markers);           
-            $(".info2").show();
-        }
-        // Add circles with job count
-        if(map.getZoom() < 7){
-            map.removeLayer(markers);
-            $(".info2").hide();
-        }
-        if(map.getZoom() > 6){ 
-          $(".info").hide(); 
-          $(".ethnicSwitch").hide(); 
-        }else{ 
-          $(".info").show(); 
-          $(".ethnicSwitch").show();
-        } 
-        if(map.getZoom() >= 7){ map.removeLayer(geojson); }//order matters
-
-        if(map.getZoom() == 6 || map.getZoom() <= 5){ 
-          map.addLayer(geojson); 
-        }  
-
-        legendHideShow(map);
-    }
     
     function onMapClick(e) {//Coordinate pop up
       popup.setLatLng(e.latlng)
            .setContent("Coordinates clicked are: " + e.latlng.toString())
            .openOn(map);
-    }
 
+      var centerPoint = map.getSize().divideBy(2),
+      targetPoint = centerPoint.subtract([1500, 0]),
+      targetLatLng = map.containerPointToLatLng(centerPoint),
+      positionData = "?positionData="+targetLatLng.lat+","+targetLatLng.lng+","+map.getZoom();
+
+      console.log(positionData);
+      
+      setTimeout(function(){
+         window.location.href = [location.protocol, '//', location.host, location.pathname,  positionData].join("");
+         window.location.href.reload(1);
+      }, 5000); 
+    }
     //map.on('click', onMapClick);
 
     if (!L.Browser.touch) {
@@ -2232,17 +2056,206 @@ function buildMain(dataFile, group){
     }
 
     buildMapData(statesData);
-    getPoints(statesData);
+    
   });   
 }   
+
+//oshaReginalAndWhdDistrictOffices  threads/Comp
+function getPoints(){
+ 
+  $.ajax({
+    url: "blackBox/js/data/threads/Comp.json",
+    dataType:'json',
+    type: 'GET',
+  }).done(function(data){
+      //Create map points and Geometry for layer > 2
+      pointsDataProcess(data);
+  });
+
+  /*$.ajax({
+    url: "blackBox/js/data/oshaReginalAndWhdDistrictOffices2.json",
+    dataType:'json',
+    type: 'GET',
+  }).done(function(data){
+      //Create map points and Geometry for layer > 2, second "thread"
+      pointsDataProcess(data);
+  });*/
+
+  var legendPoints = L.control({position: 'bottomleft'});
+  legendPoints.onAdd = function(map){
+    var div = L.DomUtil.create('div', 'info2 legend2');
+      div.innerHTML +='<i style="background:#CCFF33"></i>OSHA Area Office<br>';
+      div.innerHTML +='<i style="background:#00CC66"></i>OFCCP Regional/Area/District Office<br>';         
+      div.innerHTML +='<i style="background:#66CCFF"></i>Comprehensive Job Center<br>';        
+      div.innerHTML +='<i style="background:#0099FF"></i>Affiliate Job Center<br>'; 
+      div.innerHTML +='<i style="background:#A352CC"></i>EBSA Regional/District Office<br>';
+      div.innerHTML +='<i style="background:#FF00FF"></i>WHD District Office<br>'; //#FF0066
+      div.innerHTML +='<i style="background:#3B0737"></i>Job Corps Center<br>';           
+                  
+    return div;
+  }  
+  legendPoints.addTo(map); $(".info2").hide();
+  //Zoom based Data Traversal method
+  map.on('zoomend', function(e){
+    zoomMech();
+  });
+  //Zoom based Data Traversal method
+  map.on('zoomend', function(e){
+    zoomMech();
+  });
+}//End getPoints()
+
+function pointsDataProcess(data){
+  function populate(pointsBucket){
+        var generic, marker, oshaoffice, whdoffice, jobCentersComp, jobCentersCorps, jobCentersAffiliate;
+
+        for(w=0; w < pointsBucket.length; w++){
+            var firstWord = pointsBucket[w].TYPE.split(" ");
+
+            if(pointsBucket[w].TYPE.indexOf("OFCCP") >= 0){
+              pointsBucket[w].TYPE = "OFCCP Office";
+            }
+
+            if(pointsBucket[w].TYPE.indexOf("EBSA") >= 0){
+              pointsBucket[w].TYPE = "EBSA Office";
+            }
+
+            switch(pointsBucket[w].TYPE){               
+              case "OSHA Area Office":
+                oshaoffice = new LeafIcon({iconUrl: 'blackBox/js/images/oshaOffice.png'});
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: oshaoffice}
+                );
+                
+              break;
+              case "WHD District Office":
+                whdoffice = new LeafIcon({iconUrl: 'blackBox/js/images/whdOffice.png'});
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: whdoffice}
+                );
+                
+              break;
+              case "Comprehensive Job Center":
+                jobCentersComp = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersComp.png'});
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: jobCentersComp}
+                );
+                
+              break;
+              case "Job Corps Center":
+                jobCentersCorps = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersCorps.png'});
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: jobCentersCorps}
+                );
+                
+              break;
+              case "Affiliate Job Center":
+                jobCentersAffiliate = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersAffiliate.png'});
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: jobCentersAffiliate}
+                );
+                
+              break;
+              case "OFCCP Office":
+                jobCentersOFCCP = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersOFCCP.png'});
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: jobCentersOFCCP}
+                );
+                
+              break;                             
+              case "EBSA Office":
+                jobCentersEBSA = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersEBSA.png'});
+                
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: jobCentersEBSA}
+                );
+                
+              break;
+              default:
+                generic = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersOther.png'});
+             
+                marker = L.marker(
+                  new L.LatLng(pointsBucket[w].LATITUDE, 
+                      pointsBucket[w].LONGITUDE), 
+                  {icon: generic}
+                );
+                
+            }
+
+            marker.bindPopup(
+              "<strong>Type: "+pointsBucket[w].TYPE+"</strong><br />"
+              +pointsBucket[w].NAME+"<br />"
+              +pointsBucket[w].Street_Address+"<br />"
+              +pointsBucket[w].City+", "
+              +pointsBucket[w].State+", "
+              +pointsBucket[w].Zip+"<br />"
+            );                   
+          markers.addLayer(marker);
+        }
+        return false;
+      }
+      
+      //Begin Layer 2 and 3 Intigration
+      var pointsBucket = data,           
+          jsonPoint = L.geoJson(pointsBucket, {
+          filter: function(feature, layer) {
+              return feature.properties.show_on_map;
+          },
+      });
+          
+      populate(pointsBucket);    
+      //END Layer 2 Construction
+}
+
+function zoomMech(){
+    if(map.getZoom() >= 6){                 
+        map.addLayer(markers);           
+        $(".info2").show();
+    }
+    // Add circles with job count
+    if(map.getZoom() < 7){
+        map.removeLayer(markers);
+        $(".info2").hide();
+    }
+    if(map.getZoom() > 6){ 
+      $(".info").hide(); 
+      $(".ethnicSwitch").hide(); $(".PieChartDiv").hide(); 
+    }else{ 
+      $(".info").show(); 
+      $(".ethnicSwitch").show(); $(".PieChartDiv").show();
+    } 
+    if(map.getZoom() >= 7){ map.removeLayer(geojson); }//order matters
+
+    if(map.getZoom() == 6 || map.getZoom() <= 5){ 
+      map.addLayer(geojson); 
+    }  
+
+    legendHideShow(map);
+}
 
 var popup = L.popup();
 var map = initMap();
 var markers = new L.FeatureGroup(), polyData;
+var osmGeocoder = new L.Control.OSMGeocoder();
 var div = L.DomUtil.get('mapControls');
 var dataFile = "", group;
 var group = 'both', sets = 'populationcount';
 
+map.addControl(osmGeocoder);
 dataFile = "Both.json";
 
 //Main How to get this out of buildMapData() and make it more general???
@@ -2250,7 +2263,6 @@ dataFile = "Both.json";
 $(".leaflet-top.leaflet-right").css({
   "right":0
 });
-
 $("#mapdiv").mousemove(function(e){
     xAxisTooltip(e);   
 });
@@ -2259,14 +2271,14 @@ $(".legendDiv").append(legendMap(group));
 $("#ethnicButtons input:radio[value=both]").prop('checked', true);
 $("#jobCenterButtons input:checkbox").prop('checked', false);
 $("#treemap").hide();
+
 buildMain(dataFile, group);
+getPoints();
 //Group Switch
 $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   var group = $(this).val().toLowerCase();
   $("#jobCenterButtons input:checkbox").prop('checked', false);
   $("#treemap").remove();
-  
-
   //remove old legends when switching populations
   $(".legend").remove(); $(".info").remove(); 
   $("#treemap").remove(); $(".pieChartSVG").remove(); 

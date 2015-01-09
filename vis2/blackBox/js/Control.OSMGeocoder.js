@@ -6,7 +6,7 @@ if (typeof console == "undefined") {
 L.Control.OSMGeocoder = L.Control.extend({
 	options: {
 		collapsed: true,
-		position: 'topright',
+		position: 'topleft',
 		text: 'Locate',
 		bounds: null, // L.LatLngBounds
 		email: null, // String
@@ -53,7 +53,7 @@ L.Control.OSMGeocoder = L.Control.extend({
 
 		if (this.options.collapsed) {
 			L.DomEvent.addListener(container, 'mouseover', this._expand, this);
-			L.DomEvent.addListener(container, 'mouseout', this._collapse, this);
+			//L.DomEvent.addListener(container, 'click', this._collapse, this);
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
