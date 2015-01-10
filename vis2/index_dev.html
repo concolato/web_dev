@@ -44,10 +44,9 @@
 
     .PieChartDiv{
       float: left;
-      top: 195px;
+      top: 210px;
       position: absolute;
       z-index: 999;
-      opacity: 0.8;
     }
     #pieNational, #pieMSA{
       position: absolute;
@@ -60,7 +59,7 @@
       left: 115px;;
     }
     #pieMSA{
-      width: 150px;      
+      width: 200px;      
       left: 290px;    
     }
 
@@ -81,8 +80,11 @@
       .ethnicSwitch{
         height: 80px;
       }
-      #mapdiv{
-        
+      .PieChartDiv{
+        float: left;
+        top: 230px;
+        position: absolute;
+        z-index: 999;
       }
       .legendDiv{
         float: left;
@@ -121,13 +123,14 @@
 <body style="background:#ccc;">	
 <div id="mainWrapper">
   <div id="mapdiv">
+
     <div id="navWrapper">
 
       <div id="NavDisplayControle">Hide/Show</div>
       <div id="mapControls"> 
         <form id="ethnicButtons">
           <ul class="menu1">     
-            <li><h3 id="Both" class="navButtons"><label for="both"><input type="radio" id="both" name="ethnic" value="both" checked>All</label></h3> 
+            <li><h3 id="Both" class="navButtons"><label for="both"><input type="radio" id="both" name="ethnic" value="both" checked>AAPI</label></h3> 
               <ul id="Bothmenu2" class="navSub">
                 <li><label for="both_male"><input type="radio" id="both_male" name="ethnic" value="both_male" >Male</label></li>
                 <li><label for="both_female"><input type="radio" id="both_female" name="ethnic" value="both_female" >Female</label></li> 
@@ -250,7 +253,7 @@
       <div id="PieChartDisplayControle">Hide/Show</div>
       <div id="piecharts">
         <div id="pieNational">Nation WIde</div>
-        <div id="pieMSA">MSA</div>
+        <div id="pieMSA">Abilene</div>
 
         <div class="pieChartPopup"></div>
       </div>
@@ -268,6 +271,7 @@
   <script> //L_PREFER_CANVAS = true; </script>
   <script src="blackBox/js/leaflet_d3_JQ_Unified.js"></script>  
   <script src="blackBox/js/leafletMap_dev.js"></script>
+
   <script type="text/javascript">
     $(document).ready(function(){
         $('#treemapPopup').hide();
@@ -284,7 +288,6 @@
         $("#Africanmenu2").hide();
         $("#Hispanicsmenu2").hide();
 
-
         $(".navButtons").click(function(){
           $('.navSub').slideUp("slow");
           $(this).next('.navSub').slideDown("slow");
@@ -297,25 +300,7 @@
         $("#PieChartDisplayControle").click(function(){
           $("#piecharts").slideToggle( "slow" );
         });
-
-        /*var mapTimeOut; 
-        $("#mainWrapper").mouseover(function(){
-          console.log('timer started '+$.cache);
-
-          mapTimeOut = setTimeout(function() {
-            console.log('memory cleared');
-          }, 10000);
-        });
-
-        $('#dashboardA').mouseover(function() {
-          console.log('timer cleared');
-          if (mapTimeOut) {
-            clearTimeout(mapTimeOut);
-          }
-        }); */
       });
-
-    
 
     (function ($) {
         "use strict";

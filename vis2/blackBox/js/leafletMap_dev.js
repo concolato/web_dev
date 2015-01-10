@@ -231,7 +231,7 @@ function PieChart3d(){
         tooltip.style("visibility", "hidden");
       });
     wedges2.data(datum2).enter();
-    console.log("TEST1");
+    console.log("Test1");
     d3.selectAll(".leaflet-zoom-animated path").on("click", function(){
       console.log("TEST2");
       msa = d3.select(this).attr('class'); 
@@ -254,6 +254,11 @@ function PieChart3d(){
       //Place MSA name
       d3.select("#pieMSA").html(msaArray[0].replace(/([a-z])([A-Z])/g, '$1-$2'));     
       changeSubGroupData(msaArray[0]);
+    });
+
+    d3.selectAll("#treemap rect").on("click", function(){
+      msa = d3.select(this).attr('class');
+      console.log(msa);
     });
 
     function dataConverter(groupName){
@@ -2303,6 +2308,12 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   //Hide Treemap
   $("#treemap").hide();       
 });
+
+/*
+d3.selectAll("#mapdiv").on("mousemove", function(){
+  console.log(window.performance.memory);
+});
+*/
 
 //Controls for displaying pie charts       
 d3.selectAll("#PieChartDisplayControle, #pieNational, #pieMSA, #piecharts").style("opacity", 0);
