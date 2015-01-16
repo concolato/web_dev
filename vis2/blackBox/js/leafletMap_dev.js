@@ -285,6 +285,7 @@ function PieChart3d(){
       Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 135, 120, 120, 110, 0, 0);
     }
 
+    //msa is a string
     function getData(msa){
       var needle = msa //.replace(/[\W\s]/g,"");
       var i=0, msaSubTotals;
@@ -704,6 +705,45 @@ function buildMain(dataFile, group){
 
     //Class for placing data on the map and tree map
     function buildMapData(statesData){
+      var sets = 'populationcount';
+
+      $(".leaflet-top.leaflet-right").css({
+        "right":0
+      });
+
+      $("#mapdiv").mousemove(function(e){
+        xAxisTooltip(e);   
+      });
+
+      if(group.search(/hawaiian/i) > -1){        
+        treegroup = "hawaiian";                
+      } else if(group.search(/asian/i) > -1){
+        treegroup = "asian";       
+      }else{
+        treegroup = "both";
+      }
+
+      choropleth(statesData, group);
+      //Group Switch
+      legendHideShow(map);    
+      zoomMech(); 
+
+      treeMap(statesData, sets, treegroup, group);
+      pieChart3dCore();
+      PieChart3d();
+
+      //Treemap Switch       
+      $("#jobCenterButtons input:checkbox[name=jobC]").on( "click", function( event ) {
+        //Hide Treemap
+        if($("#jobCenterButtons input:checkbox:checked").length > 0){
+          $("#treemap").fadeIn(1500);
+          $(".legend").show();
+        }else{
+          $("#treemap").fadeOut(1000);
+          if(map.getZoom() > 5){ $(".legend").hide(); }
+        }    
+      });
+
       //Begin Choropleth code
       function choropleth(statesData, group){ 
         //console.log(group);
@@ -1561,46 +1601,6 @@ function buildMain(dataFile, group){
           zoomend:resetHighlight
         }).addTo(map);
       } //end choropleth() class
-      
-      var sets = 'populationcount';
-
-      $(".leaflet-top.leaflet-right").css({
-        "right":0
-      });
-
-      $("#mapdiv").mousemove(function(e){
-        xAxisTooltip(e);   
-      });
-
-      choropleth(statesData, group);
-
-      //Group Switch
-      legendHideShow(map);    
-      zoomMech(); 
-
-      if(group.search(/hawaiian/i) > -1){        
-        treegroup = "hawaiian";                
-      } else if(group.search(/asian/i) > -1){
-        treegroup = "asian";       
-      }else{
-        treegroup = "both";
-      }
-
-      treeMap(statesData, sets, treegroup, group);
-      pieChart3dCore();
-      PieChart3d();
-
-      //Treemap Switch       
-      $("#jobCenterButtons input:checkbox[name=jobC]").on( "click", function( event ) {
-        //Hide Treemap
-        if($("#jobCenterButtons input:checkbox:checked").length > 0){
-          $("#treemap").fadeIn(1500);
-          $(".legend").show();
-        }else{
-          $("#treemap").fadeOut(1000);
-          if(map.getZoom() > 5){ $(".legend").hide(); }
-        }    
-      });
 
       function treeMap(statesData, sets, group, colorgroup){
         var margin = {top: 1, right: 0, bottom: 10, left: 0},
@@ -2032,25 +2032,6 @@ function buildMain(dataFile, group){
       }//end treeMap
     }
 
-
-    
-    function onMapClick(e) {//Coordinate pop up
-      popup.setLatLng(e.latlng)
-           .setContent("Coordinates clicked are: " + e.latlng.toString())
-           .openOn(map);
-
-      var centerPoint = map.getSize().divideBy(2),
-      targetPoint = centerPoint.subtract([1500, 0]),
-      targetLatLng = map.containerPointToLatLng(centerPoint),
-      positionData = "?positionData="+targetLatLng.lat+","+targetLatLng.lng+","+map.getZoom();
-
-      console.log(positionData);
-      
-      setTimeout(function(){
-         window.location.href = [location.protocol, '//', location.host, location.pathname,  positionData].join("");
-         window.location.href.reload(1);
-      }, 5000); 
-    }
     //map.on('click', onMapClick);
 
     if (!L.Browser.touch) {
@@ -2060,8 +2041,7 @@ function buildMain(dataFile, group){
       L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
     }
 
-    buildMapData(statesData);
-    
+    buildMapData(statesData);   
   });   
 }   
 
@@ -2252,6 +2232,26 @@ function zoomMech(){
     legendHideShow(map);
 }
 
+function onMapClick(e) {//Coordinate pop up
+  popup.setLatLng(e.latlng)
+       .setContent("Coordinates clicked are: " + e.latlng.toString())
+       .openOn(map); 
+}
+
+function buildURL(map){
+  var centerPoint = map.getSize().divideBy(2),
+  targetPoint = centerPoint.subtract([1500, 0]),
+  targetLatLng = map.containerPointToLatLng(centerPoint),
+  positionData = "?positionData="+targetLatLng.lat+","+targetLatLng.lng+","+map.getZoom();
+
+  console.log(positionData);
+  
+  setTimeout(function(){
+     window.location.href = [location.protocol, '//', location.host, location.pathname,  positionData].join("");
+     window.location.href.reload(1);
+  }, 5000);
+}
+
 var popup = L.popup();
 var map = initMap();
 var markers = new L.FeatureGroup(), polyData;
@@ -2289,12 +2289,16 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   $("#treemap").remove(); $(".pieChartSVG").remove(); 
 
   if(group.search(/hawaiian/i) > -1){        
-    dataFile = "Hawaiian.json";                
+    dataFile = "Pacific.json";                
   } else if(group.search(/asian/i) > -1){
     dataFile = "Asian.json"; 
     
     pieChart3dCore();
     PieChart3d();       
+  }else if(group.search(/hispanic/i) > -1){
+    dataFile = "Hispanic.json";       
+  }else if(group.search(/black/i) > -1){
+    dataFile = "Black.json";       
   }else{
     dataFile = "Both.json"; 
   }
