@@ -10,6 +10,7 @@ var LeafIcon = L.Icon.extend({
 L.icon = function (options) {
     return new L.Icon(options);
 };
+$body = $("body");
 
 function detectBoundaries(tipBounds, elem){
   tipBounds.left = (tipBounds.left + $(elem).width()) > window.innerWidth ? tipBounds.left - $(elem).width() - 30 : tipBounds.left;
@@ -210,7 +211,7 @@ function PieChart3d(){
       });
     wedges.data(datum).enter();
 
-    Donut3D.draw("MsaSubGroupData", getData(MSA), 370, 120, 100, 80, 30, 0.4);
+    Donut3D.draw("MsaSubGroupData", getData(MSA), 370, 135, 90, 90, 0, 0);
     var wedges2 = MsaSubGroup
       .selectAll("path.topSlice")
       .on("mousemove", function(d){
@@ -272,7 +273,7 @@ function PieChart3d(){
       //datum2 = getData(MSA);
       wedges2.data(datum2).enter();
 
-      Donut3D.transition("MsaSubGroupData", getData(msa), 100, 80, 30, 0.4);
+      Donut3D.transition("MsaSubGroupData", getData(msa), 90, 90, 0, 0);
     }
     
     //Is this in use??
@@ -699,10 +700,12 @@ function getQueryVariable(variable) {
 
 //threads/Both oasp_dev
 function buildMain(dataFile, group){
+  var statesData = {};
+
   d3.json("blackBox/js/data/threads/"+dataFile, function(statesData) { 
     //Class for customizing icons on zoom
     //console.log(statesData);
-
+    
     //Class for placing data on the map and tree map
     function buildMapData(statesData){
       var sets = 'populationcount';
@@ -729,6 +732,7 @@ function buildMain(dataFile, group){
       zoomMech(); 
 
       treeMap(statesData, sets, treegroup, group);
+      $('#treemap').hide();
       pieChart3dCore();
       PieChart3d();
 
@@ -2041,15 +2045,15 @@ function buildMain(dataFile, group){
       L.DomEvent.on(div, 'click', L.DomEvent.stopPropagation);
     }
 
-    buildMapData(statesData);   
-  });   
+    buildMapData(statesData);  
+    ajaxStop(); 
+  }); 
 }   
 
 //oshaReginalAndWhdDistrictOffices  threads/Comp
 function getPoints(){
- 
   $.ajax({
-    url: "blackBox/js/data/threads/Comp.json",
+    url: "blackBox/js/data/oshaReginalAndWhdDistrictOffices.json",
     dataType:'json',
     type: 'GET',
   }).done(function(data){
@@ -2057,14 +2061,14 @@ function getPoints(){
       pointsDataProcess(data);
   });
 
-  /*$.ajax({
+  $.ajax({
     url: "blackBox/js/data/oshaReginalAndWhdDistrictOffices2.json",
     dataType:'json',
     type: 'GET',
   }).done(function(data){
       //Create map points and Geometry for layer > 2, second "thread"
       pointsDataProcess(data);
-  });*/
+  });
 
   var legendPoints = L.control({position: 'bottomleft'});
   legendPoints.onAdd = function(map){
@@ -2252,6 +2256,11 @@ function buildURL(map){
   }, 5000);
 }
 
+function ajaxStart() { $body.addClass("loading");}
+function ajaxStop() { $body.removeClass("loading"); }
+
+ajaxStart();
+
 var popup = L.popup();
 var map = initMap();
 var markers = new L.FeatureGroup(), polyData;
@@ -2275,12 +2284,13 @@ $("#mapdiv").mousemove(function(e){
 $(".legendDiv").append(legendMap(group));
 $("#ethnicButtons input:radio[value=both]").prop('checked', true);
 $("#jobCenterButtons input:checkbox").prop('checked', false);
-$("#treemap").hide();
 
 buildMain(dataFile, group);
 getPoints();
+
 //Group Switch
 $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
+  ajaxStart();
   var group = $(this).val().toLowerCase();
   $("#jobCenterButtons input:checkbox").prop('checked', false);
   $("#treemap").remove();
@@ -2293,8 +2303,8 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   } else if(group.search(/asian/i) > -1){
     dataFile = "Asian.json"; 
     
-    pieChart3dCore();
-    PieChart3d();       
+    //pieChart3dCore();
+    //PieChart3d();       
   }else if(group.search(/hispanic/i) > -1){
     dataFile = "Hispanic.json";       
   }else if(group.search(/black/i) > -1){
@@ -2303,14 +2313,14 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
     dataFile = "Both.json"; 
   }
   //dataFile =  capitaliseFirstLetter(group)+'.json';
-
+   
   buildMain(dataFile, group);
   map.removeLayer(geojson);
   
   $(".legendDiv").append(legendMap(group)); 
   $(".jobCenterSwitch").show();
   //Hide Treemap
-  $("#treemap").hide();       
+  $("#treemap").hide();     
 });
 
 /*
