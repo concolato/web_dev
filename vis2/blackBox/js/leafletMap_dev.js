@@ -185,7 +185,8 @@ function pieChart3dCore(){
 function PieChart3d(){
   d3.json("blackBox/js/data/asianSubGroupsPerMSA_New.json", function(statesData) {
     //d3.selectAll(".pieChart").remove();
-    $(".pieChartSVG").remove()
+    $(".pieChartSVG").empty();
+
     var MSA = "Honolulu";
     var svg = d3.select("#piecharts").append("svg").attr("class","pieChartSVG").attr("width",480).attr("height",250);
     
@@ -237,24 +238,26 @@ function PieChart3d(){
       console.log("TEST2");
       msa = d3.select(this).attr('class'); 
 
-          /*.attr("fill-opacity","0.7")
-          .attr("stroke","")
-          .attr("stroke-width",1);*/
+      /*.attr("fill-opacity","0.7")
+      .attr("stroke","")
+      .attr("stroke-width",1);*/
       
       //need to clean with regex to synchronize with IDs on polygons     
       msa = msa.replace(" leaflet-clickable","");
+      d3.select(".pieChartSVG #MsaSubGroupData").attr("class",msa);
       //console.log(msa);
       /*
-       d3.selectAll(msa)
-          .attr("stroke-width",6)
-            .attr("fill-opacity","1.0")
-            .attr("stroke","#000"); */
+      d3.selectAll(msa)
+        .attr("stroke-width",6)
+          .attr("fill-opacity","1.0")
+          .attr("stroke","#000"); */
       //Separate state data within (-)
       msaArray = msa.split("-"); 
-
+      $("#MsaSubGroupData.pieChart").remove();
       //Place MSA name
       d3.select("#pieMSA").html(msaArray[0].replace(/([a-z])([A-Z])/g, '$1-$2'));     
       changeSubGroupData(msaArray[0]);
+
     });
 
     d3.selectAll("#treemap rect").on("click", function(){
@@ -703,9 +706,6 @@ function buildMain(dataFile, group){
   var statesData = {};
 
   d3.json("blackBox/js/data/threads/"+dataFile, function(statesData) { 
-    //Class for customizing icons on zoom
-    //console.log(statesData);
-    
     //Class for placing data on the map and tree map
     function buildMapData(statesData){
       var sets = 'populationcount';
@@ -2037,7 +2037,6 @@ function buildMain(dataFile, group){
     }
 
     //map.on('click', onMapClick);
-
     if (!L.Browser.touch) {
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.on(div, 'mousewheel', L.DomEvent.stopPropagation);
