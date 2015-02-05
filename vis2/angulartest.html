@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-us" ng-app="dolApp">
+<title> Playing with Angular</title>
+
+<head>
+	<style>
+
+	</style>
+
+</head>
+
+<body>
+	<div id="nav">
+		<ol>
+			<li><a href="#/">Home</a></li>
+			<li><a href="#/next">Next Page</a></li>
+		</ol>
+	</div>
+	<div class="container">
+		<!--<div ng-controller="mainController"></div>-->
+		<div ng-view></div>
+	</div>
+
+	<script type="text/javascript" src="https://code.angularjs.org/1.3.9/angular.min.js"></script>
+	<script src="https://code.angularjs.org/1.3.9/angular-route.min.js"></script>
+	<script type="text/javascript" src="blackBox/js/my_angular.js"></script>
+</body>
+</html>
