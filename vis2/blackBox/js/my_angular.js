@@ -1,21 +1,6 @@
-var dolApp = angular.module("dolApp", ['ngRoute']);
+var myApp = angular.module("myApp", ['ngRoute']);
 
-dolApp.config(function ($routeProvider){
-	$routeProvider.when('/', {
-		templateUrl: 'main.html',
-		controller: 'mainController'
-	})
-	.when('/next', {
-		templateUrl: 'next.html',
-		controller: 'nextController'
-	});
-});
-
-dolApp.controller('mainController', ['$scope', '$log', function(a,b){
+myApp.controller('mainController', ['$scope', '$log', function($scope,$log){ //a and b arguments are for minification
 	console.log("IT Works!");
-	console.log(a);
-}]);
 
-dolApp.controller('nextController', ['$scope', '$log', function(a,b){
-	
 }]);
