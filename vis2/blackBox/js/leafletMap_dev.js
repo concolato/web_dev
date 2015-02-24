@@ -507,6 +507,7 @@ function xAxisTooltip(e){
         tipBounds = e.pageX -305;
 
     tipBounds = detectBoundaries(tipBounds, "#mapdiv");
+    console.log("test");
 
     if(tipBounds > 690){
       $(".leaflet-top.leaflet-right").css({
@@ -712,10 +713,6 @@ function buildMain(dataFile, group){
 
       $(".leaflet-top.leaflet-right").css({
         "right":0
-      });
-
-      $("#mapdiv").mousemove(function(e){
-        xAxisTooltip(e);   
       });
 
       if(group.search(/hawaiian/i) > -1){        
@@ -2225,6 +2222,10 @@ function zoomMech(){
     }else{ 
       $(".info").show(); 
       $(".ethnicSwitch").show(); $(".PieChartDiv").show();
+
+      $("#mapdiv g path").mousemove(function(e){
+          xAxisTooltip(e);   
+      });
     } 
     if(map.getZoom() >= 7){ map.removeLayer(geojson); }//order matters
 
@@ -2276,9 +2277,9 @@ dataFile = "Both.json";
 $(".leaflet-top.leaflet-right").css({
   "right":0
 });
-$("#mapdiv").mousemove(function(e){
+/*$(".leaflet-clickable").mousemove(function(e){
     xAxisTooltip(e);   
-});
+});*/
 
 $(".legendDiv").append(legendMap(group));
 $("#ethnicButtons input:radio[value=both]").prop('checked', true);
@@ -2322,11 +2323,11 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   $("#treemap").hide();     
 });
 
-/*
+
 d3.selectAll("#mapdiv").on("mousemove", function(){
   console.log(window.performance.memory);
 });
-*/
+
 
 //Controls for displaying pie charts       
 d3.selectAll("#PieChartDisplayControle, #pieNational, #pieMSA, #piecharts").style("opacity", 0);
