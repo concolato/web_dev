@@ -507,7 +507,6 @@ function xAxisTooltip(e){
         tipBounds = e.pageX -305;
 
     tipBounds = detectBoundaries(tipBounds, "#mapdiv");
-    console.log("test");
 
     if(tipBounds > 690){
       $(".leaflet-top.leaflet-right").css({
@@ -525,12 +524,13 @@ function xAxisTooltip(e){
         "top":0, "opacity":0.9, "padding-bottom":"15px"
       });
     }  
-    
-    $("body").mouseover(function(e){
+    //Be mindful of mouseover events!!!
+    /*$("#mapdiv").mouseover(function(e){
       $(".leaflet-top.leaflet-right").css("left", "");
       $(".leaflet-top.leaflet-left").css("top","");
-    });
+    });*/
 }
+
 function treemapToolTip(popCount, sets, group, jobCount){
   // Grab the height of the generated tooltip
   var tmPopHeight = $("#treemapPopup").height();
@@ -2093,6 +2093,10 @@ function getPoints(){
 function pointsDataProcess(data){
   function populate(pointsBucket){
         var generic, marker, oshaoffice, whdoffice, jobCentersComp, jobCentersCorps, jobCentersAffiliate;
+        var northEastObj = map.getBounds()._northEast;
+        var southWestObj = map.getBounds()._southWest;
+        //if(northEastObj.lat > pointsBucket[w].LATITUDE){} 
+        console.log(northEastObj.lat+":"+northEastObj.lng);
 
         for(w=0; w < pointsBucket.length; w++){
             var firstWord = pointsBucket[w].TYPE.split(" ");
@@ -2324,9 +2328,9 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
 });
 
 
-d3.selectAll("#mapdiv").on("mousemove", function(){
+/*d3.selectAll("#mapdiv").on("mousemove", function(){
   console.log(window.performance.memory);
-});
+});*/
 
 
 //Controls for displaying pie charts       
