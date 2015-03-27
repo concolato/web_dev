@@ -6,14 +6,29 @@
    <!--<link rel="stylesheet" href="blackBox/css/jquery-ui.css" /> -->
 	<style type="text/css">
 		/* Test New CSS */
+    .pointSwitchCheckBoxes{
+      margin-left: 165px;
+      position: absolute;
+      margin-top: -1px;
+      padding-bottom:2px;
+    }
+    .legend2{
+      width:200px;
+      line-height: 20px;
+    }
     #piecharts{
-        width: 480px;
-        height: 255px;
-        background-color: #F6F6F6;
-        margin: 0px 0px 10px 10px;
-        z-index:999;
-      }
-
+      width: 480px;
+      height: 255px;
+      background-color: #F6F6F6;
+      margin: 0px 0px 10px 10px;
+      z-index:999;
+    }
+    .legendDiv{
+        float: left;
+        margin-top: 485px;
+        position: relative;
+        z-index: 999;
+    }
     path.slice{
       stroke-width:2px;
     }
@@ -88,7 +103,7 @@
       }
       .legendDiv{
         float: left;
-        margin-top: 505px;
+        margin-top: 648px;
         position: relative;
         z-index: 999;
       }
@@ -258,7 +273,46 @@
           <div class="pieChartPopup"></div>
         </div>
       </div>
+
       <div class="legendDiv">
+        <div class="info2 legend2">
+          <form id="pointSwitch" >
+            <div>
+              <input type="checkbox" name="offices" value="OSHA" class="pointSwitchCheckBoxes" id="OSHA1" /> 
+              <i style="background:#CCFF33"></i>
+              <label for="OSHA1">OSHA Area Office </lable><br />
+            </div>
+            <div>
+              <input type="checkbox" name="offices" value="OFCCP" class="pointSwitchCheckBoxes" id="OFCCP1" /> <i style="background:#00CC66"></i>
+              <label for="OFCCP1">OFCCP Regional/Area/District Office </lable><br />  
+            </div>
+            <div>
+              <input type="checkbox" name="offices" value="Comprehensive" class="pointSwitchCheckBoxes" id="Comprehensive" /> 
+              <i style="background:#66CCFF"></i>
+              <label for="Comprehensive">Comprehensive Job Center</lable><br />       
+            </div>
+            <div>
+              <input type="checkbox" name="offices" value="Affiliate" class="pointSwitchCheckBoxes" id="Affiliate" /> 
+              <i style="background:#0099FF"></i>
+              <label for="Affiliate">Affiliate Job Center</lable><br />
+            </div>
+            <div>
+              <input type="checkbox" name="offices" value="EBSA" class="pointSwitchCheckBoxes" id="EBSA" /> 
+              <i style="background:#A352CC"></i>
+              <label for="EBSA">EBSA Regional/District Office</lable><br />
+            </div>
+            <div>
+              <input type="checkbox" name="offices" value="WHD" class="pointSwitchCheckBoxes" id="WHD" /> 
+              <i style="background:#FF00FF"></i>
+              <label for="WHD">WHD District Office</lable><br />
+            </div>
+            <div>
+              <input type="checkbox" name="offices" value="Job_Corps" class="pointSwitchCheckBoxes" id="Job_Corps" /> 
+              <i style="background:#3B0737"></i>
+              <label for="Job_Corps">Job Corps Center</lable><br />   
+            </div>      
+          </form>
+        </div>
       </div>
     </div>
 

@@ -35,7 +35,7 @@ function capitaliseFirstLetter(string){
 }
 
 function legendHideShow(map){
-  if(map.getZoom() > 6){ $(".legendDiv").hide(); }else{ $(".legendDiv").show();}
+  //if(map.getZoom() > 7){ $(".legendDiv").hide(); }else{ $(".legendDiv").show();}
 }
 
 //initialize map
@@ -233,7 +233,7 @@ function PieChart3d(){
         tooltip.style("visibility", "hidden");
       });
     wedges2.data(datum2).enter();
-    console.log("Test1");
+
     d3.selectAll(".leaflet-zoom-animated path").on("click", function(){
       console.log("TEST2");
       msa = d3.select(this).attr('class'); 
@@ -724,8 +724,7 @@ function buildMain(dataFile, group){
       }
 
       choropleth(statesData, group);
-      //Group Switch
-      legendHideShow(map);    
+      //Group Switch   
       zoomMech(); 
 
       treeMap(statesData, sets, treegroup, group);
@@ -2042,92 +2041,9 @@ function buildMain(dataFile, group){
     }
 
     buildMapData(statesData);  
-    //ajaxStop(); 
+    ajaxStop(); 
   }); 
 }   
-
-//oshaReginalAndWhdDistrictOffices  threads/Comp
-function getPoints(){
-  //Ajax threads for point data
-  
-  /*$.ajax({
-    url: "blackBox/js/data/threads/Comp.json",
-    dataType:'json',
-    type: 'GET',
-  }).done(function(data){
-    //Create map points and Geometry for layer 2
-    pointsDataProcess(data);
-  });
-
-  $.ajax({
-    url: "blackBox/js/data/threads/EBSA.json",
-    dataType:'json',
-    type: 'GET',
-  }).done(function(data){
-    pointsDataProcess(data);
-  });
-
-  $.ajax({
-    url: "blackBox/js/data/threads/WHD.json",
-    dataType:'json',
-    type: 'GET',
-  }).done(function(data){
-    pointsDataProcess(data);
-  });
-
-  $.ajax({
-    url: "blackBox/js/data/threads/Ofccp.json",
-    dataType:'json',
-    type: 'GET',
-  }).done(function(data){
-    pointsDataProcess(data);
-  });
-
-  $.ajax({
-    url: "blackBox/js/data/threads/Affiliate.json",
-    dataType:'json',
-    type: 'GET',
-  }).done(function(data){
-    pointsDataProcess(data);
-  });
-  */
-  
-
-  /* var legendPoints = L.control({position: 'bottomleft'});
-    legendPoints.onAdd = function(map){
-    var div = L.DomUtil.create('div', 'info2 legend2');
-
-     div.innerHTML +='';
-      div.innerHTML +='<input type="checkbox" name="OSHA" class="pointSwitchCheckBoxes" id="OSHA" /> <i style="background:#CCFF33"></i><label for="OSHA">OSHA Area Office</lable> <br />';
-      div.innerHTML +='<input type="checkbox" name="OFCCP" class="pointSwitchCheckBoxes" id="OFCCP" /> <i style="background:#00CC66"></i><label for="OFCCP">OFCCP Regional/Area/District Office<br />';         
-      div.innerHTML +='<input type="checkbox" name="Comprehensive" class="pointSwitchCheckBoxes" id="Comprehensive" /> <i style="background:#66CCFF"></i><label for="Comprehensive">Comprehensive Job Center<br />';        
-      div.innerHTML +='<input type="checkbox" name="Affiliate" class="pointSwitchCheckBoxes" id="Affiliate" /> <i style="background:#0099FF"></i><label for="Affiliate">Affiliate Job Center<br />'; 
-      div.innerHTML +='<input type="checkbox" name="EBSA" class="pointSwitchCheckBoxes" id="EBSA" /> <i style="background:#A352CC"></i><label for="EBSA">EBSA Regional/District Office<br />';
-      div.innerHTML +='<input type="checkbox" name="WHD" class="pointSwitchCheckBoxes" id="WHD" /> <i style="background:#FF00FF"></i><label for="WHD">WHD District Office<br />'; //#FF0066
-      div.innerHTML +='<input type="checkbox" name="Job_Corps" class="pointSwitchCheckBoxes" id="Job_Corps" /> <i style="background:#3B0737"></i><label for="Job_Corps">Job Corps Center<br /></form>';           
-     div.innerHTML +='';   
-
-    return div;
-  }  
-  legendPoints.addTo(map); */
-
-  $(".info2").hide();
-
-  //Zoom based Data Traversal method
-  map.on('zoomend', function(e){
-    zoomMech();
-  });
-  //Zoom based Data Traversal method
-  map.on('zoomend', function(e){
-    zoomMech();
-  });
-  ajaxStop();
-}//End getPoints()
-
-var markersOsha = new L.FeatureGroup(), markersWhd = new L.FeatureGroup(); 
-var markersOfccp = new L.FeatureGroup(), markersEbsa = new L.FeatureGroup();
-var markersAffiliate = new L.FeatureGroup(), markersComp = new L.FeatureGroup();
-var markersJobCorps = new L.FeatureGroup();
 
 function pointsDataProcessOsha(data){
   function populate(pointsBucket){
@@ -2418,33 +2334,50 @@ function pointsDataProcessJobCorp(data){
       
   populate(pointsBucket);    
 }
+
 function zoomMech(){
-  // Temporarily switched backwards for point filtering < >
-  if(map.getZoom() <= 6){                            
-      $(".info2").show();
-  }
-  // Add circles with job count
-  if(map.getZoom() > 7){
-      $(".info2").hide();
-  }
-  if(map.getZoom() < 6){ 
-    $(".info").hide(); 
+  if(map.getZoom() > 7){ 
+    console.log("TEST.");
+    $(".info").hide(); $(".info2").show();
     $(".ethnicSwitch").hide(); $(".PieChartDiv").hide(); 
   }else{ 
-    $(".info").show(); 
+    $(".info").show(); $(".info2").hide();
     $(".ethnicSwitch").show(); $(".PieChartDiv").show();
 
     $("#mapdiv g path").mousemove(function(e){
         xAxisTooltip(e);   
     });
   } 
-  if(map.getZoom() <= 7){ /*map.removeLayer(geojson);*/ }//order matters
 
-  if(map.getZoom() == 6 || map.getZoom() >= 5){ 
-    //map.addLayer(geojson); 
+  if(map.getZoom() >= 7){ 
+    map.removeLayer(geojson);
+
+    /*
+    map.addLayer(markersOsha);
+    map.addLayer(markersOfccp);
+    map.addLayer(markersComp);
+    map.addLayer(markersAffiliate);
+    map.addLayer(markersEbsa);
+    map.addLayer(markersWhd);
+    map.addLayer(markersJobCorps);
+    map.addLayer(markersJobCorps); 
+    */
+
+  }//order matters
+
+  if(map.getZoom() == 7 || map.getZoom() <= 6){ 
+    map.addLayer(geojson); 
+
+    /*
+    map.removeLayer(markersOsha);
+    map.removeLayer(markersOfccp);
+    map.removeLayer(markersComp);
+    map.removeLayer(markersAffiliate);
+    map.removeLayer(markersEbsa);
+    map.removeLayer(markersWhd);
+    map.removeLayer(markersJobCorps);
+    map.removeLayer(markersJobCorps); */
   }  
-
-  legendHideShow(map);
 }
 
 function onMapClick(e) {//Coordinate pop up
@@ -2470,6 +2403,7 @@ function buildURL(map){
 function ajaxStart() { $body.addClass("loading");}
 function ajaxStop() { $body.removeClass("loading"); }
 
+//Main Section
 ajaxStart();
 
 var popup = L.popup();
@@ -2499,10 +2433,15 @@ $(".leaflet-top.leaflet-right").css({
 
 $(".legendDiv").append(legendMap(group));
 $("#ethnicButtons input:radio[value=both]").prop('checked', true);
-$("#jobCenterButtons input:checkbox").prop('checked', true);
+$("#jobCenterButtons input:checkbox").prop('checked', false);
+$("#pointSwitch input:checkbox").prop('checked', false);
+$("#piecharts").hide();
 
-//buildMain(dataFile, group);
-getPoints();
+buildMain(dataFile, group);
+//Zoom based Data Traversal method
+map.on('zoomend', function(e){
+  zoomMech();
+});
 
 //Group Switch
 $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
@@ -2515,18 +2454,22 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   $("#treemap").remove(); $(".pieChartSVG").remove(); 
 
   if(group.search(/hawaiian/i) > -1){        
-    dataFile = "Pacific.json";                
+    dataFile = "Pacific.json";    
+    $("#piecharts").hide();            
   } else if(group.search(/asian/i) > -1){
     dataFile = "Asian.json"; 
-    
+    $("#piecharts").show();
     //pieChart3dCore();
     //PieChart3d();       
   }else if(group.search(/hispanic/i) > -1){
-    dataFile = "Hispanic.json";       
+    dataFile = "Hispanic.json"; 
+    $("#piecharts").hide();      
   }else if(group.search(/black/i) > -1){
-    dataFile = "Black.json";       
+    dataFile = "Black.json";  
+    $("#piecharts").hide();     
   }else{
     dataFile = "Both.json"; 
+    $("#piecharts").hide();
   }
   //dataFile =  capitaliseFirstLetter(group)+'.json';
    
@@ -2535,29 +2478,34 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   
   $(".legendDiv").append(legendMap(group)); 
   $(".jobCenterSwitch").show();
+
   //Hide Treemap
   $("#treemap").hide();     
 });
 
-//$("#pointSwitch input:checkbox[name=OSHA]").on( "click", function( event ) {
+//Point Switch
 $("#pointSwitch input[type=checkbox]").on('change', function () {
   if($('#pointSwitch input[value="OSHA"]').prop('checked')){
+    ajaxStart();
     $.ajax({
       url: "blackBox/js/data/threads/Osha.json",
       dataType:'json',
       type: 'GET',
-    }).done(function(data){
-      pointsDataProcessOsha(data);
+    }).done(function(data){     
+      pointsDataProcessOsha(data);      
     });
-
-    // Temporarily switched backwards for point filtering < >
-    if(map.getZoom() <= 6){                            
+    ajaxStop();
+    
+    if(map.getZoom() >= 6){ //Deeper into the map                           
       map.addLayer(markersOsha);
+    }else{
+      map.removeLayer(markersOsha);
     }
   }else{
     // Add circles with job count
-    if(map.getZoom() < 7){
+    if(map.getZoom() > 6){
       map.removeLayer(markersOsha);
+      //console.log("pointSwitchRemove markersOsha");
     }
   }  
 
@@ -2567,18 +2515,21 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       dataType:'json',
       type: 'GET',
     }).done(function(data){
+      ajaxStart();
       pointsDataProcessOfccp(data);
+      ajaxStop();
     });
 
-    // Temporarily switched backwards for point filtering < >
-    if(map.getZoom() <= 6){                            
+    if(map.getZoom() >= 6){                            
       map.addLayer(markersOfccp);
-    }
-  }else{
-    console.log("pointSwitchRemove");
-    // Add circles with job count
-    if(map.getZoom() < 7){
+    }else{
       map.removeLayer(markersOfccp);
+    }
+  }else{   
+    // Add circles with job count
+    if(map.getZoom() > 6){
+      map.removeLayer(markersOfccp);
+      //console.log("pointSwitchRemove markersOfccp");
     }
   }    
 
@@ -2588,17 +2539,22 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       dataType:'json',
       type: 'GET',
     }).done(function(data){
+      ajaxStart();
       pointsDataProcessComp(data);
+      ajaxStop();
     });
 
     // Temporarily switched backwards for point filtering < >
-    if(map.getZoom() <= 6){                            
+    if(map.getZoom() >= 6){                            
       map.addLayer(markersComp);
+    }else{
+      map.removeLayer(markersComp);
     }
   }else{
-    console.log("pointSwitchRemove");
+    
     // Add circles with job count
-    if(map.getZoom() < 7){
+    if(map.getZoom() > 6){
+      //console.log("pointSwitchRemove markersComp");
       map.removeLayer(markersComp);
     }
   }
@@ -2609,18 +2565,22 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       dataType:'json',
       type: 'GET',
     }).done(function(data){
+      ajaxStart();
       pointsDataProcessAffiliate(data);
+      ajaxStop();
     });
 
     // Temporarily switched backwards for point filtering < >
-    if(map.getZoom() <= 6){                            
+    if(map.getZoom() >= 6){                            
       map.addLayer(markersAffiliate);
+    }else{
+      map.removeLayer(markersAffiliate);
     }
   }else{
-    console.log("pointSwitchRemove");
     // Add circles with job count
-    if(map.getZoom() < 7){
+    if(map.getZoom() > 6){
       map.removeLayer(markersAffiliate);
+      //console.log("pointSwitchRemove markersAffiliate");
     }
   }
 
@@ -2630,18 +2590,22 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       dataType:'json',
       type: 'GET',
     }).done(function(data){
+      ajaxStart();
       pointsDataProcessEbsa(data);
+      ajaxStop();
     });
 
     // Temporarily switched backwards for point filtering < >
-    if(map.getZoom() <= 6){                            
+    if(map.getZoom() >= 6){                            
       map.addLayer(markersEbsa);
+    }else{
+      map.removeLayer(markersEbsa);
     }
   }else{
-    console.log("pointSwitchRemove");
     // Add circles with job count
-    if(map.getZoom() < 7){
+    if(map.getZoom() > 6){
       map.removeLayer(markersEbsa);
+      //console.log("pointSwitchRemove markersEbsa");
     }
   }
 
@@ -2651,18 +2615,22 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       dataType:'json',
       type: 'GET',
     }).done(function(data){
+      ajaxStart();
       pointsDataProcessWhd(data);
+      ajaxStop();
     });
 
     // Temporarily switched backwards for point filtering < >
-    if(map.getZoom() <= 6){                            
+    if(map.getZoom() >= 6){                            
       map.addLayer(markersWhd);
+    }else{
+      map.removeLayer(markersWhd);
     }
   }else{
-    console.log("pointSwitchRemove");
     // Add circles with job count
-    if(map.getZoom() < 7){
+    if(map.getZoom() > 6){
       map.removeLayer(markersWhd);
+      //console.log("pointSwitchRemove markersWhd");
     }
   }
 
@@ -2672,27 +2640,29 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       dataType:'json',
       type: 'GET',
     }).done(function(data){
+      ajaxStart();
       pointsDataProcessJobCorp(data);
+      ajaxStop();
     });
 
     // Temporarily switched backwards for point filtering < >
-    if(map.getZoom() <= 6){                            
+    if(map.getZoom() >= 6){                            
       map.addLayer(markersJobCorps);
+    }else{
+      map.removeLayer(markersJobCorps);
     }
   }else{
-    console.log("pointSwitchRemove");
     // Add circles with job count
-    if(map.getZoom() < 7){
+    if(map.getZoom() > 6){
       map.removeLayer(markersJobCorps);
+      //console.log("pointSwitchRemove markersJobCorps");
     }
   }
 });
 
-
 /*d3.selectAll("#mapdiv").on("mousemove", function(){
   console.log(window.performance.memory);
 });*/
-
 
 //Controls for displaying pie charts       
 d3.selectAll("#PieChartDisplayControle, #pieNational, #pieMSA, #piecharts").style("opacity", 0);

@@ -118,11 +118,17 @@ text-anchor: middle;
     font-size: .80em;
 }
 .legend i, .legend2 i {
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+.legend i{
     width: 13px;
     height: 13px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
+}
+.legend2 i {
+    width: 15px;
+    height: 15px;
 }
 #MapFullClick{
 	color:#0066FF;
@@ -201,7 +207,7 @@ text-anchor: middle;
   color:#fff;*/
 }
 .leaflet-top.leaflet-left{
-  top:80px;
+  top:70px;
 }
 .treemapNodeHighlight{
   background: #000 !important;
