@@ -2046,10 +2046,12 @@ function buildMain(dataFile, group){
 }   
 
 function pointsDataProcessOsha(data){
+  var pointsBucket = {};
+
   function populate(pointsBucket){
     var index =0, marker, oshaoffice;
-    var northEastObj = map.getBounds()._northEast;//Not in use
-    var southWestObj = map.getBounds()._southWest;
+    //var northEastObj = map.getBounds()._northEast;//Not in use
+    //var southWestObj = map.getBounds()._southWest;
     //if(northEastObj.lat > pointsBucket[w].LATITUDE){} 
     //console.log(northEastObj.lat+":"+northEastObj.lng);
     if (index < pointsBucket.length) {
@@ -2079,7 +2081,7 @@ function pointsDataProcessOsha(data){
     }
   }
   //Begin Layer 2 and 3 Intigration
-  var pointsBucket = data,           
+  pointsBucket = data,           
       jsonPoint = L.geoJson(pointsBucket, {
       filter: function(feature, layer) {
           return feature.properties.show_on_map;
@@ -2090,6 +2092,8 @@ function pointsDataProcessOsha(data){
 }
 
 function pointsDataProcessOfccp(data){
+  var pointsBucket = {};
+
   function populate(pointsBucket){
     var index =0, marker, ofccpoffice;
 
@@ -2131,6 +2135,8 @@ function pointsDataProcessOfccp(data){
 }
 
 function pointsDataProcessComp(data){
+  var pointsBucket = {};
+
   function populate(pointsBucket){
     var index =0, marker, jobCentersComp;
 
@@ -2172,6 +2178,8 @@ function pointsDataProcessComp(data){
 }
 
 function pointsDataProcessAffiliate(data){
+  var pointsBucket = {};
+
   function populate(pointsBucket){
     var index =0, marker, jobCentersAffiliate;
 
@@ -2213,6 +2221,8 @@ function pointsDataProcessAffiliate(data){
 }
 
 function pointsDataProcessEbsa(data){
+  var pointsBucket = {};
+
   function populate(pointsBucket){
     var index =0, marker, jobCentersEBSA;
 
@@ -2254,6 +2264,8 @@ function pointsDataProcessEbsa(data){
 }
 
 function pointsDataProcessWhd(data){
+  var pointsBucket = {};
+
   function populate(pointsBucket){
     var index =0, marker, whdoffice;
 
@@ -2295,6 +2307,8 @@ function pointsDataProcessWhd(data){
 }
 
 function pointsDataProcessJobCorp(data){
+  var pointsBucket = {};
+  
   function populate(pointsBucket){
     var index =0, marker, jobCentersCorps;
 
@@ -2337,7 +2351,7 @@ function pointsDataProcessJobCorp(data){
 
 function zoomMech(){
   if(map.getZoom() > 7){ 
-    console.log("TEST.");
+    
     $(".info").hide(); $(".info2").show();
     $(".ethnicSwitch").hide(); $(".PieChartDiv").hide(); 
   }else{ 
@@ -2345,7 +2359,7 @@ function zoomMech(){
     $(".ethnicSwitch").show(); $(".PieChartDiv").show();
 
     $("#mapdiv g path").mousemove(function(e){
-        xAxisTooltip(e);   
+        //xAxisTooltip(e);   
     });
   } 
 
@@ -2485,8 +2499,7 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
 
 //Point Switch
 $("#pointSwitch input[type=checkbox]").on('change', function () {
-  if($('#pointSwitch input[value="OSHA"]').prop('checked')){
-    ajaxStart();
+  if($('#pointSwitch input[value="OSHA"]').prop('checked')){ 
     $.ajax({
       url: "blackBox/js/data/threads/Osha.json",
       dataType:'json',
@@ -2494,18 +2507,18 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
     }).done(function(data){     
       pointsDataProcessOsha(data);      
     });
-    ajaxStop();
     
     if(map.getZoom() >= 6){ //Deeper into the map                           
       map.addLayer(markersOsha);
     }else{
-      map.removeLayer(markersOsha);
+      //map.removeLayer(markersOsha);
+      markersOsha.clearLayers();
     }
   }else{
     // Add circles with job count
     if(map.getZoom() > 6){
-      map.removeLayer(markersOsha);
-      //console.log("pointSwitchRemove markersOsha");
+      //map.removeLayer(markersOsha);
+      markersOsha.clearLayers();
     }
   }  
 
@@ -2524,12 +2537,13 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       map.addLayer(markersOfccp);
     }else{
       map.removeLayer(markersOfccp);
+      //markersOfccp.clearLayers();
     }
   }else{   
     // Add circles with job count
     if(map.getZoom() > 6){
       map.removeLayer(markersOfccp);
-      //console.log("pointSwitchRemove markersOfccp");
+      //markersOfccp.clearLayers();
     }
   }    
 
@@ -2539,23 +2553,19 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       dataType:'json',
       type: 'GET',
     }).done(function(data){
-      ajaxStart();
       pointsDataProcessComp(data);
-      ajaxStop();
     });
 
-    // Temporarily switched backwards for point filtering < >
     if(map.getZoom() >= 6){                            
       map.addLayer(markersComp);
     }else{
       map.removeLayer(markersComp);
     }
   }else{
-    
-    // Add circles with job count
     if(map.getZoom() > 6){
       //console.log("pointSwitchRemove markersComp");
       map.removeLayer(markersComp);
+      //markersComp.clearLayers();
     }
   }
 
@@ -2570,14 +2580,12 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       ajaxStop();
     });
 
-    // Temporarily switched backwards for point filtering < >
     if(map.getZoom() >= 6){                            
       map.addLayer(markersAffiliate);
     }else{
       map.removeLayer(markersAffiliate);
     }
   }else{
-    // Add circles with job count
     if(map.getZoom() > 6){
       map.removeLayer(markersAffiliate);
       //console.log("pointSwitchRemove markersAffiliate");
@@ -2595,14 +2603,12 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       ajaxStop();
     });
 
-    // Temporarily switched backwards for point filtering < >
     if(map.getZoom() >= 6){                            
       map.addLayer(markersEbsa);
     }else{
       map.removeLayer(markersEbsa);
     }
   }else{
-    // Add circles with job count
     if(map.getZoom() > 6){
       map.removeLayer(markersEbsa);
       //console.log("pointSwitchRemove markersEbsa");
@@ -2620,14 +2626,12 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       ajaxStop();
     });
 
-    // Temporarily switched backwards for point filtering < >
     if(map.getZoom() >= 6){                            
       map.addLayer(markersWhd);
     }else{
       map.removeLayer(markersWhd);
     }
   }else{
-    // Add circles with job count
     if(map.getZoom() > 6){
       map.removeLayer(markersWhd);
       //console.log("pointSwitchRemove markersWhd");
@@ -2645,14 +2649,12 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       ajaxStop();
     });
 
-    // Temporarily switched backwards for point filtering < >
     if(map.getZoom() >= 6){                            
       map.addLayer(markersJobCorps);
     }else{
       map.removeLayer(markersJobCorps);
     }
   }else{
-    // Add circles with job count
     if(map.getZoom() > 6){
       map.removeLayer(markersJobCorps);
       //console.log("pointSwitchRemove markersJobCorps");
