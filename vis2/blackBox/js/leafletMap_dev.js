@@ -2076,7 +2076,7 @@ function pointsDataProcessOsha(data){
         markersOsha.addLayer(marker);
       }
     }else{
-      console.log("pointsBucket is empty.");
+      console.log("Osha pointsBucket is empty.");
       return false;
     }
   }
@@ -2119,7 +2119,7 @@ function pointsDataProcessOfccp(data){
         markersOfccp.addLayer(marker);
       }
     }else{
-      console.log("pointsBucket is empty.");
+      console.log("Ofccp pointsBucket is empty.");
       return false;
     }
   }
@@ -2162,7 +2162,7 @@ function pointsDataProcessComp(data){
         markersComp.addLayer(marker);
       }
     }else{
-      console.log("pointsBucket is empty.");
+      console.log("Comp pointsBucket is empty.");
       return false;
     }
   }
@@ -2205,7 +2205,7 @@ function pointsDataProcessAffiliate(data){
         markersAffiliate.addLayer(marker);
       }
     }else{
-      console.log("pointsBucket is empty.");
+      console.log("Affiliate pointsBucket is empty.");
       return false;
     }
   }
@@ -2248,7 +2248,7 @@ function pointsDataProcessEbsa(data){
         markersEbsa.addLayer(marker);
       }
     }else{
-      console.log("pointsBucket is empty.");
+      console.log("Ebsa pointsBucket is empty.");
       return false;
     }
   }
@@ -2291,7 +2291,7 @@ function pointsDataProcessWhd(data){
         markersWhd.addLayer(marker);
       }
     }else{
-      console.log("pointsBucket is empty.");
+      console.log("Whd pointsBucket is empty.");
       return false;
     }
   }
@@ -2334,7 +2334,7 @@ function pointsDataProcessJobCorp(data){
         markersJobCorps.addLayer(marker);
       }
     }else{
-      console.log("pointsBucket is empty.");
+      console.log("Job Corp pointsBucket is empty.");
       return false;
     }
   }
@@ -2366,31 +2366,53 @@ function zoomMech(){
   if(map.getZoom() >= 7){ 
     map.removeLayer(geojson);
 
-    /*
-    map.addLayer(markersOsha);
-    map.addLayer(markersOfccp);
-    map.addLayer(markersComp);
-    map.addLayer(markersAffiliate);
-    map.addLayer(markersEbsa);
-    map.addLayer(markersWhd);
-    map.addLayer(markersJobCorps);
-    map.addLayer(markersJobCorps); 
-    */
-
+    if($('#pointSwitch input[value="OSHA"]').prop('checked')){
+      map.addLayer(markersOsha);
+    }else{
+      map.removeLayer(markersOsha);
+    }
+    if($('#pointSwitch input[value="OFCCP"]').prop('checked')){
+      map.addLayer(markersOfccp);
+    }else{
+      map.removeLayer(markersOfccp);
+    }
+    if($('#pointSwitch input[value="Comprehensive"]').prop('checked')){
+      map.addLayer(markersComp);
+    }else{
+      map.removeLayer(markersComp);
+    }
+    if($('#pointSwitch input[value="Affiliate"]').prop('checked')){
+      map.addLayer(markersAffiliate);
+    }else{
+      map.removeLayer(markersAffiliate);
+    }
+    if($('#pointSwitch input[value="EBSA"]').prop('checked')){
+      map.addLayer(markersEbsa);
+    }else{
+      map.removeLayer(markersEbsa);
+    }
+    if($('#pointSwitch input[value="WHD"]').prop('checked')){
+      map.addLayer(markersWhd);
+    }else{
+      map.removeLayer(markersWhd);
+    }
+    if($('#pointSwitch input[value="Job_Corps"]').prop('checked')){
+      map.addLayer(markersJobCorps);
+    }else{
+      map.removeLayer(markersJobCorps);
+    }
   }//order matters
 
   if(map.getZoom() == 7 || map.getZoom() <= 6){ 
     map.addLayer(geojson); 
-
-    /*
-    map.removeLayer(markersOsha);
+  
+    map.removeLayer(markersOsha);   
     map.removeLayer(markersOfccp);
     map.removeLayer(markersComp);
     map.removeLayer(markersAffiliate);
     map.removeLayer(markersEbsa);
     map.removeLayer(markersWhd);
-    map.removeLayer(markersJobCorps);
-    map.removeLayer(markersJobCorps); */
+    map.removeLayer(markersJobCorps);  
   }  
 }
 
@@ -2448,7 +2470,7 @@ $(".leaflet-top.leaflet-right").css({
 $(".legendDiv").append(legendMap(group));
 $("#ethnicButtons input:radio[value=both]").prop('checked', true);
 $("#jobCenterButtons input:checkbox").prop('checked', false);
-$("#pointSwitch input:checkbox").prop('checked', false);
+$("#pointSwitch input:checkbox").prop('checked', true);
 $("#piecharts").hide();
 
 buildMain(dataFile, group);
@@ -2497,16 +2519,65 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   $("#treemap").hide();     
 });
 
-//Point Switch
-$("#pointSwitch input[type=checkbox]").on('change', function () {
+//Add all points to map by default
+$.ajax({
+  url: "blackBox/js/data/threads/Osha.json",
+  dataType:'json',
+  type: 'GET',
+}).done(function(data){     
+  pointsDataProcessOsha(data);      
+});
+
+$.ajax({
+  url: "blackBox/js/data/threads/Ofccp.json",
+  dataType:'json',
+  type: 'GET',
+}).done(function(data){
+  pointsDataProcessOfccp(data);
+});
+
+$.ajax({
+  url: "blackBox/js/data/threads/Comp.json",
+  dataType:'json',
+  type: 'GET',
+}).done(function(data){
+  pointsDataProcessComp(data);
+});
+
+$.ajax({
+  url: "blackBox/js/data/threads/WHD.json",
+  dataType:'json',
+  type: 'GET',
+}).done(function(data){
+  pointsDataProcessWhd(data);
+});
+
+$.ajax({
+  url: "blackBox/js/data/threads/EBSA.json",
+  dataType:'json',
+  type: 'GET',
+}).done(function(data){
+  pointsDataProcessEbsa(data);
+});
+
+$.ajax({
+  url: "blackBox/js/data/threads/Affiliate.json",
+  dataType:'json',
+  type: 'GET',
+}).done(function(data){
+  pointsDataProcessAffiliate(data);
+});
+
+//Point Switch on map
+$("#pointSwitch input[type=checkbox]").on('click', function () {
   if($('#pointSwitch input[value="OSHA"]').prop('checked')){ 
-    $.ajax({
+    /*$.ajax({
       url: "blackBox/js/data/threads/Osha.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){     
       pointsDataProcessOsha(data);      
-    });
+    });*/
     
     if(map.getZoom() >= 6){ //Deeper into the map                           
       map.addLayer(markersOsha);
@@ -2523,15 +2594,13 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
   }  
 
   if($('#pointSwitch input[value="OFCCP"]').prop('checked')){ 
-    $.ajax({
+    /*$.ajax({
       url: "blackBox/js/data/threads/Ofccp.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){
-      ajaxStart();
       pointsDataProcessOfccp(data);
-      ajaxStop();
-    });
+    });*/
 
     if(map.getZoom() >= 6){                            
       map.addLayer(markersOfccp);
@@ -2548,13 +2617,13 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
   }    
 
   if($('#pointSwitch input[value="Comprehensive"]').prop('checked')){ 
-    $.ajax({
+    /*$.ajax({
       url: "blackBox/js/data/threads/Comp.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){
       pointsDataProcessComp(data);
-    });
+    });*/
 
     if(map.getZoom() >= 6){                            
       map.addLayer(markersComp);
@@ -2570,15 +2639,13 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
   }
 
   if($('#pointSwitch input[value="Affiliate"]').prop('checked')){ 
-    $.ajax({
+    /*$.ajax({
       url: "blackBox/js/data/threads/Affiliate.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){
-      ajaxStart();
       pointsDataProcessAffiliate(data);
-      ajaxStop();
-    });
+    });*/
 
     if(map.getZoom() >= 6){                            
       map.addLayer(markersAffiliate);
@@ -2593,7 +2660,7 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
   }
 
   if($('#pointSwitch input[value="EBSA"]').prop('checked')){ 
-    $.ajax({
+    /*$.ajax({
       url: "blackBox/js/data/threads/EBSA.json",
       dataType:'json',
       type: 'GET',
@@ -2601,7 +2668,7 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
       ajaxStart();
       pointsDataProcessEbsa(data);
       ajaxStop();
-    });
+    });*/
 
     if(map.getZoom() >= 6){                            
       map.addLayer(markersEbsa);
@@ -2616,15 +2683,13 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
   }
 
   if($('#pointSwitch input[value="WHD"]').prop('checked')){ 
-    $.ajax({
+    /*$.ajax({
       url: "blackBox/js/data/threads/WHD.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){
-      ajaxStart();
       pointsDataProcessWhd(data);
-      ajaxStop();
-    });
+    });*/
 
     if(map.getZoom() >= 6){                            
       map.addLayer(markersWhd);
@@ -2639,15 +2704,13 @@ $("#pointSwitch input[type=checkbox]").on('change', function () {
   }
 
   if($('#pointSwitch input[value="Job_Corps"]').prop('checked')){ 
-    $.ajax({
+    /*$.ajax({
       url: "blackBox/js/data/threads/JobCorps.json",
       dataType:'json',
       type: 'GET',
     }).done(function(data){
-      ajaxStart();
       pointsDataProcessJobCorp(data);
-      ajaxStop();
-    });
+    });*/
 
     if(map.getZoom() >= 6){                            
       map.addLayer(markersJobCorps);
