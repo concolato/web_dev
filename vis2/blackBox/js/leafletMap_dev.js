@@ -2568,6 +2568,14 @@ $.ajax({
   pointsDataProcessAffiliate(data);
 });
 
+$.ajax({
+  url: "blackBox/js/data/threads/JobCorps.json",
+  dataType:'json',
+  type: 'GET',
+}).done(function(data){
+  pointsDataProcessJobCorp(data);
+});
+
 //Point Switch on map
 $("#pointSwitch input[type=checkbox]").on('click', function () {
   if($('#pointSwitch input[value="OSHA"]').prop('checked')){ 
