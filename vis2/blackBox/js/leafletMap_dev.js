@@ -184,7 +184,6 @@ function pieChart3dCore(){
 
 function PieChart3d(){
   d3.json("blackBox/js/data/asianSubGroupsPerMSA_New.json", function(statesData) {
-    //d3.selectAll(".pieChart").remove();
     $(".pieChartSVG").empty();
 
     var MSA = "Honolulu";
@@ -194,7 +193,7 @@ function PieChart3d(){
     var datum2 = getData(MSA), datum = getNationalSubGroupData(), msaSubData = [], tooltipLabel = "", msaArray = [];
 
     var nationalSubGroup = svg.append("g").attr("id","nationalSubGroupData").attr("class","pieChart");
-    var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","pieChart");
+    var MsaSubGroup  = svg.append("g").attr("id","MsaSubGroupData").attr("class","Abilene-TX");
     
                         //X,  Y,   W,   H,  H Thickness, W thickness
     Donut3D.draw("nationalSubGroupData", getNationalSubGroupData(), 135, 135, 120, 110, 0, 0);
@@ -213,44 +212,51 @@ function PieChart3d(){
     wedges.data(datum).enter();
 
     Donut3D.draw("MsaSubGroupData", getData(MSA), 370, 135, 90, 90, 0, 0);
+
     var wedges2 = MsaSubGroup
       .selectAll("path.topSlice")
       .on("mousemove", function(d){
+        msa = d3.select("#MsaSubGroupData").attr('class'); 
+        msaID = '.'+d3.select("#MsaSubGroupData").attr('class');
         mousex = d3.mouse(this);
-            mousex = mousex[0] + 400;
+        mousex = mousex[0] + 400;
 
-            d3.select(this).classed("hover", true);
-            //Not sure if this is the best solution but here it is
-            if(d.label == undefined){
-              tooltipLabel = d.data.label;
-            }else{
-              tooltipLabel = d.label;
-            }
+        d3.select(this).classed("hover", true);
+        //Not sure if this is the best solution but here it is
+        if(d.label == undefined){
+          tooltipLabel = d.data.label;
+        }else{
+          tooltipLabel = d.label;
+        }
            
-          tooltip.html(dataConverter(tooltipLabel)+": " + numberWithCommas(d.value)).style("visibility", "visible").style("left", mousex + "px" );
+        tooltip.html(dataConverter(tooltipLabel)+": " + numberWithCommas(d.value)).style("visibility", "visible").style("left", mousex + "px" );
+
+        d3.selectAll(".leaflet-zoom-animated").selectAll(msaID)
+          .attr("stroke-width",6)
+          .attr("fill-opacity","1.0")
+          .attr("stroke","#000");
       })
       .on("mouseout", function(){
+        msaID = '.'+d3.select("#MsaSubGroupData").attr('class');
         tooltip.style("visibility", "hidden");
+
+        d3.selectAll(".leaflet-zoom-animated").selectAll(msaID)
+          .attr("fill-opacity","0.7")
+          .attr("stroke","")
+          .attr("stroke-width",1);
       });
+      
     wedges2.data(datum2).enter();
+    d3.select("#pieMSA").html("Abilene");
 
     d3.selectAll(".leaflet-zoom-animated path").on("click", function(){
-      console.log("TEST2");
       msa = d3.select(this).attr('class'); 
-
-      /*.attr("fill-opacity","0.7")
-      .attr("stroke","")
-      .attr("stroke-width",1);*/
+      //d3.selectAll("#piecharts #MsaSubGroupData, .pieChart").remove();
       
       //need to clean with regex to synchronize with IDs on polygons     
       msa = msa.replace(" leaflet-clickable","");
       d3.select(".pieChartSVG #MsaSubGroupData").attr("class",msa);
-      //console.log(msa);
-      /*
-      d3.selectAll(msa)
-        .attr("stroke-width",6)
-          .attr("fill-opacity","1.0")
-          .attr("stroke","#000"); */
+
       //Separate state data within (-)
       msaArray = msa.split("-"); 
       $("#MsaSubGroupData.pieChart").remove();
@@ -508,7 +514,7 @@ function xAxisTooltip(e){
 
     tipBounds = detectBoundaries(tipBounds, "#mapdiv");
 
-    if(tipBounds > 690){
+    if(tipBounds > 980){
       $(".leaflet-top.leaflet-right").css({
         "right":0, "width":"355px",
         "top":0, "opacity":0.9, "padding-bottom":"15px"
@@ -2359,7 +2365,7 @@ function zoomMech(){
     $(".ethnicSwitch").show(); $(".PieChartDiv").show();
 
     $("#mapdiv g path").mousemove(function(e){
-        //xAxisTooltip(e);   
+        xAxisTooltip(e);   
     });
   } 
 
@@ -2458,8 +2464,7 @@ var group = 'both', sets = 'populationcount';
 map.addControl(osmGeocoder);
 dataFile = "Both.json";
 
-//Main How to get this out of buildMapData() and make it more general???
-//function main(statesData){
+// How to get this out of buildMapData() and make it more general???
 $(".leaflet-top.leaflet-right").css({
   "right":0
 });
@@ -2485,6 +2490,7 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
   var group = $(this).val().toLowerCase();
   $("#jobCenterButtons input:checkbox").prop('checked', false);
   $("#treemap").remove();
+
   //remove old legends when switching populations
   $(".legend").remove(); $(".info").remove(); 
   $("#treemap").remove(); $(".pieChartSVG").remove(); 
