@@ -20,6 +20,10 @@ archturiaApp.config(function ($routeProvider){ //Dependency injection with the $
 	.when('/products', {
 		templateUrl: 'products.html',
 		controller: 'productsController'
+	})
+	.when('/contact', {
+		templateUrl: 'contact.html',
+		controller: 'contactController'
 	});
 });
 
@@ -47,4 +51,9 @@ archturiaApp.controller('aboutController', ['$scope', '$log', '$location', funct
 archturiaApp.controller('productsController', ['$scope', '$log', '$location', function(a, b, c){
 	b.info(c.path()); 
 	a.name = "Products Page";
+}]);
+
+archturiaApp.controller('contactController', ['$scope', '$log', '$location', function(a, b, c){
+	b.info(c.path()); 
+	a.name = "Contact Page";
 }]);
