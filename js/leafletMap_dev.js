@@ -183,7 +183,7 @@ function pieChart3dCore(){
 }
 
 function PieChart3d(){
-  d3.json("blackBox/js/data/asianSubGroupsPerMSA_New.json", function(statesData) {
+  d3.json("js/data/asianSubGroupsPerMSA_New.json", function(statesData) {
     $(".pieChartSVG").empty();
 
     var MSA = "Honolulu";
@@ -712,7 +712,7 @@ function getQueryVariable(variable) {
 function buildMain(dataFile, group){
   var statesData = {};
 
-  d3.json("blackBox/js/data/threads/"+dataFile, function(statesData) { 
+  d3.json("js/data/threads/"+dataFile, function(statesData) { 
     //Class for placing data on the map and tree map
     function buildMapData(statesData){
       var sets = 'populationcount';
@@ -2064,7 +2064,7 @@ function pointsDataProcessOsha(data){
       for(w=0; w < pointsBucket.length; w++){
         var firstWord = pointsBucket[w].TYPE.split(" ");
 
-        oshaoffice = new LeafIcon({iconUrl: 'blackBox/js/images/oshaOffice.png'});
+        oshaoffice = new LeafIcon({iconUrl: 'js/images/oshaOffice.png'});
           marker = L.marker(
             new L.LatLng(pointsBucket[w].LATITUDE, 
                 pointsBucket[w].LONGITUDE), 
@@ -2107,7 +2107,7 @@ function pointsDataProcessOfccp(data){
       for(w=0; w < pointsBucket.length; w++){
         var firstWord = pointsBucket[w].TYPE.split(" ");
 
-        ofccpoffice = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersOFCCP.png'});
+        ofccpoffice = new LeafIcon({iconUrl: 'js/images/jobCentersOFCCP.png'});
           marker = L.marker(
             new L.LatLng(pointsBucket[w].LATITUDE, 
                 pointsBucket[w].LONGITUDE), 
@@ -2150,7 +2150,7 @@ function pointsDataProcessComp(data){
       for(w=0; w < pointsBucket.length; w++){
         var firstWord = pointsBucket[w].TYPE.split(" ");
 
-        jobCentersComp = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersComp.png'});
+        jobCentersComp = new LeafIcon({iconUrl: 'js/images/jobCentersComp.png'});
           marker = L.marker(
             new L.LatLng(pointsBucket[w].LATITUDE, 
                 pointsBucket[w].LONGITUDE), 
@@ -2193,7 +2193,7 @@ function pointsDataProcessAffiliate(data){
       for(w=0; w < pointsBucket.length; w++){
         var firstWord = pointsBucket[w].TYPE.split(" ");
 
-        jobCentersAffiliate = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersAffiliate.png'});
+        jobCentersAffiliate = new LeafIcon({iconUrl: 'js/images/jobCentersAffiliate.png'});
           marker = L.marker(
             new L.LatLng(pointsBucket[w].LATITUDE, 
                 pointsBucket[w].LONGITUDE), 
@@ -2236,7 +2236,7 @@ function pointsDataProcessEbsa(data){
       for(w=0; w < pointsBucket.length; w++){
         var firstWord = pointsBucket[w].TYPE.split(" ");
 
-        jobCentersEBSA = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersEBSA.png'});
+        jobCentersEBSA = new LeafIcon({iconUrl: 'js/images/jobCentersEBSA.png'});
           marker = L.marker(
             new L.LatLng(pointsBucket[w].LATITUDE, 
                 pointsBucket[w].LONGITUDE), 
@@ -2279,7 +2279,7 @@ function pointsDataProcessWhd(data){
       for(w=0; w < pointsBucket.length; w++){
         var firstWord = pointsBucket[w].TYPE.split(" ");
 
-       whdoffice = new LeafIcon({iconUrl: 'blackBox/js/images/whdOffice.png'});
+       whdoffice = new LeafIcon({iconUrl: 'js/images/whdOffice.png'});
           marker = L.marker(
             new L.LatLng(pointsBucket[w].LATITUDE, 
                 pointsBucket[w].LONGITUDE), 
@@ -2322,7 +2322,7 @@ function pointsDataProcessJobCorp(data){
       for(w=0; w < pointsBucket.length; w++){
         var firstWord = pointsBucket[w].TYPE.split(" ");
 
-        jobCentersCorps = new LeafIcon({iconUrl: 'blackBox/js/images/jobCentersCorps.png'});
+        jobCentersCorps = new LeafIcon({iconUrl: 'js/images/jobCentersCorps.png'});
           marker = L.marker(
             new L.LatLng(pointsBucket[w].LATITUDE, 
                 pointsBucket[w].LONGITUDE), 
@@ -2527,7 +2527,7 @@ $("#ethnicButtons input:radio[name=ethnic]").on( "click", function( event ) {
 
 //Add all points to map by default
 $.ajax({
-  url: "blackBox/js/data/threads/Osha.json",
+  url: "js/data/threads/Osha.json",
   dataType:'json',
   type: 'GET',
 }).done(function(data){     
@@ -2535,7 +2535,7 @@ $.ajax({
 });
 
 $.ajax({
-  url: "blackBox/js/data/threads/Ofccp.json",
+  url: "js/data/threads/Ofccp.json",
   dataType:'json',
   type: 'GET',
 }).done(function(data){
@@ -2543,7 +2543,7 @@ $.ajax({
 });
 
 $.ajax({
-  url: "blackBox/js/data/threads/Comp.json",
+  url: "js/data/threads/Comp.json",
   dataType:'json',
   type: 'GET',
 }).done(function(data){
@@ -2551,7 +2551,7 @@ $.ajax({
 });
 
 $.ajax({
-  url: "blackBox/js/data/threads/WHD.json",
+  url: "js/data/threads/WHD.json",
   dataType:'json',
   type: 'GET',
 }).done(function(data){
@@ -2559,7 +2559,7 @@ $.ajax({
 });
 
 $.ajax({
-  url: "blackBox/js/data/threads/EBSA.json",
+  url: "js/data/threads/EBSA.json",
   dataType:'json',
   type: 'GET',
 }).done(function(data){
@@ -2567,7 +2567,7 @@ $.ajax({
 });
 
 $.ajax({
-  url: "blackBox/js/data/threads/Affiliate.json",
+  url: "js/data/threads/Affiliate.json",
   dataType:'json',
   type: 'GET',
 }).done(function(data){
@@ -2575,7 +2575,7 @@ $.ajax({
 });
 
 $.ajax({
-  url: "blackBox/js/data/threads/JobCorps.json",
+  url: "js/data/threads/JobCorps.json",
   dataType:'json',
   type: 'GET',
 }).done(function(data){
