@@ -1595,8 +1595,8 @@ function buildMain(dataFile, group){
           
           this._div.innerHTML = '<div id="populationBox">'+  
             (metroArea ?
-                '<b> Metro Area: ' + jobCenterName[0]+ '</b>'+ Data
-            : 'Hover over state metro areas.') +
+                '<strong> Metro Area: ' + jobCenterName[0]+ '</strong>'+ Data
+            : '<strong>A Socio-Economic Data Experiment: <br />Can you determin which Metro Areas need more job centers?</strong><br /> Hover over state metro areas.') +
           '</div>';
         };
         info.addTo(map);
