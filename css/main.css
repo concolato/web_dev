@@ -1,47 +1,339 @@
-#map{
-      float: left;
-      width: 100%;
-      height: 600px;
-    }
-    #title{
-      font-size: 4em;
-      color: #003D99;
-      margin:0;
-    }
-    #mainWrapperTop, #mainWrapperBottom{
-      margin: 0 auto;
-      width:1000px;
-      clear:both;
-      background: #ccc;
-      padding:5px;
-    }
-    .infoBox{
-      padding:5px;
-    }
-    #slideout {
-      background: #666;
-      position: fixed;
-      width: 280px;
-      height: 80px;
-      top: 45%;
-      right:-280px;
-      padding-left: 20px;
-      z-index: 9999;
-    }
-        
-    #clickme {
-      position: absolute;
-      top: 0; left: 0;
-      height: 70px;
-      width: 20px;
-      background: #003D99;
-      cursor: pointer;
-    }
+svg {
+  font: 10px sans-serif;
+}
+#dashboardA div {
+  font: 11px sans-serif;
+  margin: 1px;
+}
+.chart{
+top:-20px;
+}
+.chart rect {
+fill: #800026;
+}
+.chart text {
+fill: white;
+font: 10px sans-serif;
+text-anchor: middle;
+}
+.chart{
+  margin: 0 auto;
+  width: 1200px;
+  background: #ccc;
+  height: 120px;
+  clear: both;
+  position: relative;
+  top: -155px;
+  left: 151px;
+}
+#barchartPopup{
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 15px;
 
-    #slidecontent {
-     float:left;
-     color: #FFFFFF;
-     padding: 3px;
-    }
-    #pageTitle{ width:988px; padding: 5px; background: #fff; border-bottom-right-radius: 50px;}
-    .ui-tabs-nav{background: #003D99;}
+  width:185px;
+  height: 8%;
+  position: absolute;
+  font-size: 10pt;
+  color:#555;
+  z-index: 999;
+}
+.bar:hover{
+  fill:#3d3d3d;
+}
+.bar {
+  fill: steelblue;
+  fill-opacity: .9;
+}
+/*
+.ethnicSwitch{
+  height: 70px;
+  top:-460px !important;
+}
+.jobCenterSwitch{
+  height: 30px;
+  top:-443px !important;
+}
+*/
+.ethnicSwitch, .jobCenterSwitch{
+  /*width:130px; 
+  overflow: hidden;
+  font-size: 14px;
+  float:right;
+  left:155px;
+  cursor: auto;
+  position: relative;
+
+  background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+  border-radius: 5px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  font: 14px/16px Arial,Helvetica,sans-serif;
+  padding: 6px 8px;
+  color: #3d3d3d;
+  clear:both;*/
+}
+
+#treemap{
+  margin: auto 0px;
+}
+#treeMapControls{
+  width: 140px;
+  height: 17pt;
+  color: #3D3D3D;
+  font-size: 13px !important;
+}
+#treemapPopup{
+  width: auto; /*205px;*/
+  max-width: 250px;
+  min-width: 205px;
+  background: #fff;
+  z-index: 9999;
+  position: absolute;;
+}
+
+.info, .dashtitle, .info2, #treeMapControls, #treemapPopup{
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  margin:5px 5px 10px 10px !important;
+  z-index: 9999;
+}
+.info h4, .info2 h4 {
+  margin: 0 0 5px;
+  color: #777;
+}
+.legend{
+  left:160px;
+  width:130px;
+  z-index: 999;
+  top: -140px;
+  line-height: 16px !important;
+}
+.legend, .legend2 {
+    line-height: 14.5px;
+    color: #555;
+    font-size: .80em;
+}
+.legend i, .legend2 i {
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+.legend i{
+    width: 13px;
+    height: 13px;
+}
+.legend2 i {
+    width: 15px;
+    height: 15px;
+}
+#MapFullClick{
+  color:#0066FF;
+  font-size: .81em;
+  cursor: pointer;
+  float: left;
+  width:100px;
+  position: absolute;
+  top: 10px;
+  margin-left: 190px;
+}
+#MapClick{
+  z-index: 2000;
+  width:50px;
+  float: left;
+  background: #CCC;
+  cursor: pointer;
+}
+
+#mapdiv{
+  height: 650px;
+}
+
+#mapControls{
+  background: #F6F6F6;
+  font-size: 1.1em;
+  font-family: sans-serif;
+  z-index:999;
+  opacity: 0.9;
+}
+
+#mapControls h3{
+  font-size: 1.0em;
+  margin: 0px;
+  border: 1px dotted #ccc;
+}
+
+#mapControls h3:hover{background:#ccc; }
+
+#NavDisplayControle, #PieChartDisplayControle{width:40px; color:#FF00FF; cursor: pointer; clear: both;}
+#NavDisplayControle{
+  margin-left: 265px;
+} 
+#PieChartDisplayControle{
+  margin-left: 10px;
+}
+
+#navWrapper{
+  width: 325px;
+  float:right;
+  position: relative;
+  margin: 150px 5px;
+  z-index:999;
+}
+#mainWrapper{
+  /*width:1535px;*/
+}
+.legendDiv{
+  float: left;
+  margin-top: 480px; /* 420 */
+  position: relative;
+  z-index: 999;
+}
+#populationBox{ width:355px;}
+#Both, #Asian, #Pacific{ cursor: pointer;}
+
+.menu1{padding: 0; list-style: none outside none; margin: 0;}
+#Bothmenu2, #Asianmenu2, #Pacificmenu2{list-style: none  none;}
+#menu1 label, #Bothmenu2 label, #Asianmenu2 label, #Pacificmenu2 label{cursor: pointer;}
+
+#dashboardA {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  /*width: 1400px;
+  background-color:#B7D2D2;
+  color:#fff;*/
+}
+.leaflet-top.leaflet-left{
+  top:70px;
+}
+.treemapNodeHighlight{
+  background: #000 !important;
+  opacity: 1.0 !important;
+  border: solid 1px black !important;
+}
+.node {
+  border: solid 1px white;
+  font: 13px helvetica;
+  line-height: 12px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: 2px;
+  opacity: 0.6;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+form {
+  left: 5px;
+  top: 3px;
+}
+
+#dashboardB {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 985px;
+  background:#000;
+  color:#ccc;
+}
+
+button {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.title{
+    color:#555555;
+    width:180pt; float:right; padding:5px; margin:5px 10px 5px 5px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size:11px;
+}
+.controls{
+    color:#555555;
+    width:100pt; height: 15px; float:left; 
+    padding:5px; margin:5px 0px 0px 10px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    font-size:11px;
+}
+
+/*Geo Search*/
+ .leaflet-control-geocoder a {
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  display: block;
+}
+
+.leaflet-control-geocoder {
+  box-shadow: 0 1px 7px #999;
+  background: #f8f8f9;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+}
+
+.leaflet-control-geocoder a {
+  background-image: url(../js/img/geocoder.png);
+  width: 36px;
+  height: 36px;
+}
+
+.leaflet-touch .leaflet-control-geocoder a {
+  width: 44px;
+  height: 44px;
+}
+
+.leaflet-control-geocoder .leaflet-control-geocoder-form,
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-toggle {
+  display: none;
+}
+
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
+  display: block;
+  position: relative;
+}
+
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
+  padding: 5px;
+}
+
+/* Start by setting display:none to make this hidden.
+ Then we position it in relation to the viewport window
+ with position:fixed. Width, height, top and left speak
+ speak for themselves. Background we set to 80% white with
+ our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('../js/img/ajax-loader.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
