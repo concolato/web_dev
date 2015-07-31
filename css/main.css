@@ -1,3 +1,13 @@
+body {
+  height: 100em;
+  background: -webkit-linear-gradient(white, #80B2FF); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(white, #80B2FF); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(white, #80B2FF); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(white, #80B2FF); /* Standard syntax */
+}
+.container{
+  background-color: #fff;
+}
 svg {
   font: 10px sans-serif;
 }
@@ -44,6 +54,14 @@ text-anchor: middle;
 .bar {
   fill: steelblue;
   fill-opacity: .9;
+}
+.formBox{
+  
+  width: 800px;
+  position: relative;
+}
+.formBox button{
+float: left;
 }
 /*
 .ethnicSwitch{
